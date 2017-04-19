@@ -2,6 +2,9 @@ package com.pactera.enterprisesecretary;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -15,6 +18,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pactera.enterprisesecretary.adapter.ViewPagerAdapter;
+import com.pactera.enterprisesecretary.fragments.MainFragment;
 import com.pactera.enterprisesecretary.util.StaticProperty;
 
 import java.util.ArrayList;
@@ -29,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     SharedPreferences share = null;
     SharedPreferences.Editor sedit = null;
 
-    private ScrollView mainScrollView = null;
 
     private LinearLayout mainButtonOne = null;
     private ImageView mainButtonIconOne = null;
@@ -45,7 +49,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Toast myToast;
 
 
-    private List<Map<String, String>> mainList = null;
+    private ViewPager mainViewpager = null;
+    private ViewPagerAdapter mainAdapter;
+    private List<Fragment> fragments = new ArrayList<Fragment>();
+
+    private ArrayList itemList = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,74 +61,58 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         //测试数据
-        this.mainList = new ArrayList<Map<String, String>>();
+        this.itemList = new ArrayList<Map<String, String>>();
 
         for (int i = 0; i < 5; i++) {
             Map<String, String> myMap = new HashMap<String, String>();
             myMap.put("name", "加载中");
             myMap.put("description", "加载中......");
-            this.mainList.add(myMap);
+            this.itemList.add(myMap);
         }
 
 
-        //保存全局信息
-        share = MainActivity.this.getSharedPreferences(
-                StaticProperty.SAVEINFO, Activity.MODE_PRIVATE);
         //获取屏幕尺寸
         DisplayMetrics displayMetrics = new DisplayMetrics();
         this.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         width = displayMetrics.widthPixels;
         height = displayMetrics.heightPixels;
+
+        //保存全局信息
+        share = MainActivity.this.getSharedPreferences(
+                StaticProperty.SAVEINFO, Activity.MODE_PRIVATE);
         sedit = share.edit();
         sedit.putInt(StaticProperty.SCREENWIDTH, width);//保存屏幕宽度
         sedit.putInt(StaticProperty.SCREENHEIGHT, height);//保存屏幕高度
         sedit.commit();//提交保存信息
 
 
-        //中部的滚动视图区域
-        this.mainScrollView = (ScrollView) super.findViewById(R.id.mainScrollView);
-        int itemWidth = width/2;
-        int itemHeight = width/4;
-        RelativeLayout scrollRelativeLayout = new RelativeLayout(this);//相对布局
+        //创建切换视图
+        this.mainViewpager = (ViewPager) super.findViewById(R.id.mainViewpager);
+        this.mainAdapter = new ViewPagerAdapter(getSupportFragmentManager(), fragments);
+        this.mainViewpager.setAdapter(this.mainAdapter);
 
-        //每个scrollView的子视图
-        for (int i = 0; i < this.mainList.size(); i++) {
-            Map<String,String> myMap = this.mainList.get(i);
-
-           View itemView = LayoutInflater.from(this).inflate(
-                    R.layout.scrollview_main, null);
-
-            RelativeLayout.LayoutParams itemLyParam = new RelativeLayout.LayoutParams(
-                    itemWidth, itemHeight);
-            if(i%2==0) {
-                itemLyParam.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
-            }else{
-                itemLyParam.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-            }
-            itemLyParam.topMargin = (i/2)*itemHeight;
-            itemView.setLayoutParams(itemLyParam);
-
-            scrollRelativeLayout.addView(itemView);
-        }
-        this.mainScrollView.addView(scrollRelativeLayout);
-
-
+        //创建切换页面
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("itemList", this.itemList);
+        MainFragment mainFragment = MainFragment.newInstance(bundle);
+        fragments.add(mainFragment);
+        this.mainAdapter.notifyDataSetChanged();
 
         //底部按钮区域
-        this.mainButtonOne = (LinearLayout)super.findViewById(R.id.mainButtonOne);
+        this.mainButtonOne = (LinearLayout) super.findViewById(R.id.mainButtonOne);
         this.mainButtonOne.setOnClickListener(this);
 
-        this.mainButtonTwo = (LinearLayout)super.findViewById(R.id.mainButtonTwo);
+        this.mainButtonTwo = (LinearLayout) super.findViewById(R.id.mainButtonTwo);
         this.mainButtonTwo.setOnClickListener(this);
 
-        this.mainButtonThree = (LinearLayout)super.findViewById(R.id.mainButtonThree);
+        this.mainButtonThree = (LinearLayout) super.findViewById(R.id.mainButtonThree);
         this.mainButtonThree.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         myToast = Toast.makeText(getApplicationContext(),
-                "点击了"+v.getId(), Toast.LENGTH_LONG);
+                "点击了" + v.getId(), Toast.LENGTH_LONG);
         myToast.setGravity(Gravity.CENTER, 0, 0);
         myToast.show();
         switch (v.getId()) {

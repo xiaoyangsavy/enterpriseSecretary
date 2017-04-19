@@ -4,65 +4,7 @@
     android:layout_height="match_parent"
     android:background="#000000" >
 
-    <!-- 顶部按钮布局 -->
-    <RelativeLayout
-        android:id="@+id/mainTopLayout"
-        android:layout_width="fill_parent"
-        android:layout_height="300dp"
-        android:background="@color/colorPrimaryDark"
-        android:layout_alignParentTop="true" >
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            />
-
-        <ImageButton
-            android:id="@+id/mainTopButton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
-            android:src="@android:drawable/ic_menu_gallery"
-            android:scaleType="fitXY"/>
-
-        <TextView
-            android:id="@+id/mainTopTitle"
-            android:layout_width="100dp"
-            android:layout_height="15dp"
-            android:layout_marginTop="5dp"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/mainTopButton"
-            android:text="企秘"
-            android:gravity="center"
-            android:textColor="#FFFFFF"
-            android:textSize="@dimen/font_size_main"
-            />
-
-        <TextView
-            android:id="@+id/mainTopDescription"
-            android:layout_width="100dp"
-            android:layout_height="15dp"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/mainTopTitle"
-            android:text="人工智能小秘书"
-            android:gravity="center"
-            android:textColor="#FFFFFF"
-            android:textSize="@dimen/font_size_main"
-            />
-
-        <ImageButton
-            android:id="@+id/mainTopVoiceButton"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_below="@id/mainTopDescription"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
-            android:src="@android:drawable/ic_menu_gallery"
-            android:scaleType="fitXY"/>
-
-        </RelativeLayout>
 
 
 
@@ -173,15 +115,16 @@
     </RelativeLayout>
 
 
-    <ScrollView
-        android:id="@+id/mainScrollView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/mainTopLayout"
+
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/mainViewpager"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
         android:layout_above="@id/mainBottomLayout"
-        android:background="#FFFFFF">
+        android:background="@color/colorPrimaryDark">
+    </android.support.v4.view.ViewPager>
 
 
-    </ScrollView>
 
     </RelativeLayout>
