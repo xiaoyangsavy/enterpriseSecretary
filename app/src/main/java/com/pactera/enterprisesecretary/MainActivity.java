@@ -20,6 +20,8 @@ import android.widget.Toast;
 
 import com.pactera.enterprisesecretary.adapter.ViewPagerAdapter;
 import com.pactera.enterprisesecretary.fragments.MainFragment;
+import com.pactera.enterprisesecretary.fragments.MessageFragment;
+import com.pactera.enterprisesecretary.fragments.UserFragment;
 import com.pactera.enterprisesecretary.util.StaticProperty;
 
 import java.util.ArrayList;
@@ -94,8 +96,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //创建切换页面
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("itemList", this.itemList);
+        MessageFragment messageFragment = MessageFragment.newInstance(bundle);
+        fragments.add(messageFragment);
         MainFragment mainFragment = MainFragment.newInstance(bundle);
         fragments.add(mainFragment);
+       UserFragment userFragment = UserFragment.newInstance(bundle);
+        fragments.add(userFragment);
         this.mainAdapter.notifyDataSetChanged();
 
         //底部按钮区域
@@ -117,13 +123,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         myToast.show();
         switch (v.getId()) {
             case R.id.mainButtonOne:
-
+                MainActivity.this.mainViewpager
+                        .setCurrentItem(0);
                 break;
             case R.id.mainButtonTwo:
-
+                MainActivity.this.mainViewpager
+                        .setCurrentItem(1);
                 break;
             case R.id.mainButtonThree:
-
+                MainActivity.this.mainViewpager
+                        .setCurrentItem(2);
                 break;
         }
     }
