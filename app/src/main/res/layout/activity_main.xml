@@ -1,18 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.pactera.enterprisesecretary.MainActivity">
+    android:background="#000000" >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <!-- 顶部按钮布局 -->
+    <RelativeLayout
+        android:id="@+id/mainTopLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="150dp"
+        android:background="@color/colorPrimaryDark"
+        android:layout_alignParentTop="true" >
 
-</android.support.constraint.ConstraintLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            />
+
+        </RelativeLayout>
+
+
+
+<!-- 底部按钮布局 -->
+    <RelativeLayout
+        android:id="@+id/mainBottomLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="70dp"
+        android:background="@color/colorAccent"
+        android:layout_alignParentBottom="true" >
+
+        <LinearLayout
+            android:id="@+id/mainButtonOne"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:background="#FFFFFF"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:descendantFocusability="blocksDescendants"
+            android:focusable="true"
+            >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:scaleType="fitCenter"
+                android:src="@android:drawable/ic_menu_gallery"
+                />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:gravity="center"
+                android:text="消息"
+                android:textColor="#000000"
+                android:textSize="10sp"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/mainButtonTwo"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:background="#FFFFFF"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:clickable="true"
+            android:descendantFocusability="blocksDescendants"
+            android:focusable="true"
+            >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:scaleType="fitCenter"
+                android:src="@android:drawable/ic_menu_gallery"
+                />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:gravity="center"
+                android:text="企秘"
+                android:textColor="#000000"
+                android:textSize="10sp"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/mainButtonThree"
+            android:layout_width="80dp"
+            android:layout_height="50dp"
+            android:background="#FFFFFF"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:clickable="true"
+            android:descendantFocusability="blocksDescendants"
+            android:focusable="true"
+            >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:scaleType="fitCenter"
+                android:src="@android:drawable/ic_menu_gallery"
+                />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:gravity="center"
+                android:text="我的"
+                android:textColor="#000000"
+                android:textSize="10sp"/>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+    <ScrollView
+        android:id="@+id/mainScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/mainTopLayout"
+        android:layout_above="@id/mainBottomLayout"
+        android:background="#FFFFFF">
+
+
+    </ScrollView>
+
+    </RelativeLayout>
