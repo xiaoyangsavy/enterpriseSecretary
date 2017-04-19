@@ -16,6 +16,8 @@
     android:layout_width="match_parent"
     android:layout_height="30dp"
     android:layout_toRightOf="@id/main_image"
+    android:textColor="#000000"
+    android:textSize="@dimen/font_size_main"
     android:text="加载中"/>
 
     <TextView
@@ -24,6 +26,8 @@
         android:layout_height="20dp"
         android:layout_below="@id/main_title"
         android:layout_toRightOf="@id/main_image"
+        android:textColor="#000000"
+        android:textSize="@dimen/font_size_main"
         android:text="加载中......"/>
 
 </RelativeLayout>

@@ -2,17 +2,18 @@ package com.pactera.enterprisesecretary;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.graphics.drawable.Icon;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pactera.enterprisesecretary.util.StaticProperty;
 
@@ -21,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private int height = 0;
     private int width = 0;
@@ -29,6 +30,20 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences.Editor sedit = null;
 
     private ScrollView mainScrollView = null;
+
+    private LinearLayout mainButtonOne = null;
+    private ImageView mainButtonIconOne = null;
+    private TextView mainButtonTextOne = null;
+
+    private LinearLayout mainButtonTwo = null;
+    private ImageView mainButtonIconTwo = null;
+    private TextView mainButtonTextTwo = null;
+
+    private LinearLayout mainButtonThree = null;
+    private ImageView mainButtonIconThree = null;
+    private TextView mainButtonTextThree = null;
+    private Toast myToast;
+
 
     private List<Map<String, String>> mainList = null;
 
@@ -62,19 +77,19 @@ public class MainActivity extends AppCompatActivity {
         sedit.commit();//提交保存信息
 
 
+        //中部的滚动视图区域
         this.mainScrollView = (ScrollView) super.findViewById(R.id.mainScrollView);
         int itemWidth = width/2;
         int itemHeight = width/4;
         RelativeLayout scrollRelativeLayout = new RelativeLayout(this);//相对布局
+
+        //每个scrollView的子视图
         for (int i = 0; i < this.mainList.size(); i++) {
             Map<String,String> myMap = this.mainList.get(i);
 
            View itemView = LayoutInflater.from(this).inflate(
                     R.layout.scrollview_main, null);
 
-
-//            RelativeLayout itemRelativeLayout = new RelativeLayout(this);//相对布局
-//            itemRelativeLayout.setBackgroundColor(Color.RED);
             RelativeLayout.LayoutParams itemLyParam = new RelativeLayout.LayoutParams(
                     itemWidth, itemHeight);
             if(i%2==0) {
@@ -85,22 +100,39 @@ public class MainActivity extends AppCompatActivity {
             itemLyParam.topMargin = (i/2)*itemHeight;
             itemView.setLayoutParams(itemLyParam);
 
-//            ImageView icoImageView = new ImageView(this);//图标
-//            TextView titleTextView = new TextView(this);//标题
-//            TextView descriptionTextView = new TextView(this);//描述
-//
-//            icoImageView.setImageResource(R.mipmap.ic_launcher);
-//            icoImageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-//            itemRelativeLayout.addView(icoImageView);
-//
-//            titleTextView.setText(myMap.get("name"));
-//            itemRelativeLayout.addView(titleTextView);
-//
-//            descriptionTextView.setText(myMap.get("description"));
-//            itemRelativeLayout.addView(descriptionTextView);
             scrollRelativeLayout.addView(itemView);
         }
         this.mainScrollView.addView(scrollRelativeLayout);
 
+
+
+        //底部按钮区域
+        this.mainButtonOne = (LinearLayout)super.findViewById(R.id.mainButtonOne);
+        this.mainButtonOne.setOnClickListener(this);
+
+        this.mainButtonTwo = (LinearLayout)super.findViewById(R.id.mainButtonTwo);
+        this.mainButtonTwo.setOnClickListener(this);
+
+        this.mainButtonThree = (LinearLayout)super.findViewById(R.id.mainButtonThree);
+        this.mainButtonThree.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        myToast = Toast.makeText(getApplicationContext(),
+                "点击了"+v.getId(), Toast.LENGTH_LONG);
+        myToast.setGravity(Gravity.CENTER, 0, 0);
+        myToast.show();
+        switch (v.getId()) {
+            case R.id.mainButtonOne:
+
+                break;
+            case R.id.mainButtonTwo:
+
+                break;
+            case R.id.mainButtonThree:
+
+                break;
+        }
     }
 }
