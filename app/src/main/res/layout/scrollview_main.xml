@@ -4,30 +4,39 @@
     android:layout_height="match_parent">
 
 <ImageView
-    android:id="@+id/main_image"
+    android:id="@+id/itemMainIconImageView"
     android:layout_width="50dp"
     android:layout_height="50dp"
+    android:layout_marginLeft="9dp"
+    android:layout_marginTop="13dp"
     android:layout_alignParentLeft="true"
     android:scaleType="fitCenter"
     android:src="@android:drawable/ic_menu_gallery"/>
 
 <TextView
-    android:id="@+id/main_title"
+    android:id="@+id/itemMainTitleTextView"
     android:layout_width="match_parent"
     android:layout_height="30dp"
-    android:layout_toRightOf="@id/main_image"
-    android:textColor="#000000"
-    android:textSize="@dimen/font_size_main"
-    android:text="加载中"/>
+    android:layout_toRightOf="@id/itemMainIconImageView"
+    android:layout_alignTop="@id/itemMainIconImageView"
+    android:layout_marginTop="4dp"
+    android:layout_marginLeft="16dp"
+    android:textColor="@color/colorBlack"
+    android:textSize="@dimen/font_size_title"
+    android:text="加载中"
+    android:gravity="left|center_vertical"/>
 
     <TextView
-        android:id="@+id/main_description"
+        android:id="@+id/itemMainDescriptionTextView"
         android:layout_width="match_parent"
         android:layout_height="20dp"
-        android:layout_below="@id/main_title"
-        android:layout_toRightOf="@id/main_image"
-        android:textColor="#000000"
-        android:textSize="@dimen/font_size_main"
-        android:text="加载中......"/>
+        android:layout_alignBottom="@id/itemMainIconImageView"
+        android:layout_toRightOf="@id/itemMainIconImageView"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="16dp"
+        android:textColor="@color/colorGray"
+        android:textSize="@dimen/font_size_description"
+        android:text="加载中......"
+        android:gravity="center_vertical"/>
 
 </RelativeLayout>

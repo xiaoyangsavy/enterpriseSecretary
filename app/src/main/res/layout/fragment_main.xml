@@ -39,8 +39,8 @@
             android:layout_below="@id/mainTopButton"
             android:text="企秘"
             android:gravity="center"
-            android:textColor="#FFFFFF"
-            android:textSize="@dimen/font_size_main"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/font_size_title"
             />
 
         <TextView
@@ -51,8 +51,8 @@
             android:layout_below="@id/mainTopTitle"
             android:text="人工智能小秘书"
             android:gravity="center"
-            android:textColor="#FFFFFF"
-            android:textSize="@dimen/font_size_main"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/font_size_description"
             />
 
         <ImageButton

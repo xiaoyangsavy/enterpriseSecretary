@@ -1,23 +1,20 @@
-package com.pactera.enterprisesecretary;
+package com.pactera.enterprisesecretary.activity;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pactera.enterprisesecretary.R;
 import com.pactera.enterprisesecretary.adapter.ViewPagerAdapter;
 import com.pactera.enterprisesecretary.fragments.MainFragment;
 import com.pactera.enterprisesecretary.fragments.MessageFragment;
