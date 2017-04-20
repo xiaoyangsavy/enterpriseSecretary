@@ -9,17 +9,18 @@
 
 
 <!-- 底部按钮布局 -->
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/mainBottomLayout"
         android:layout_width="fill_parent"
-        android:layout_height="70dp"
-        android:background="@color/colorAccent"
+        android:layout_height="49dp"
+        android:background="@color/colorWhite"
         android:layout_alignParentBottom="true" >
 
         <LinearLayout
-            android:id="@+id/mainButtonOne"
-            android:layout_width="80dp"
-            android:layout_height="50dp"
+            android:id="@+id/bottomButtonOne"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="#FFFFFF"
             android:orientation="vertical"
             android:layout_centerVertical="true"
@@ -29,30 +30,33 @@
             >
 
             <ImageView
-                android:id="@+id/mainButtonIconOne"
+                android:id="@+id/bottomImageViewOne"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="23.3dp"
+                android:layout_marginTop="8dp"
                 android:scaleType="fitCenter"
-                android:src="@android:drawable/ic_menu_gallery"
+                android:src="@drawable/common_button_message_unselect"
                 />
 
 
             <TextView
-                android:id="@+id/mainButtonTextOne"
+                android:id="@+id/bottomTextViewOne"
                 android:layout_width="match_parent"
-                android:layout_height="10dp"
+                android:layout_height="14dp"
+                android:layout_marginTop="4dp"
                 android:gravity="center"
                 android:text="消息"
                 android:textColor="#000000"
-                android:textSize="@dimen/font_size_title"/>
+                android:textSize="10sp"/>
 
         </LinearLayout>
 
 
         <LinearLayout
-            android:id="@+id/mainButtonTwo"
-            android:layout_width="80dp"
-            android:layout_height="50dp"
+            android:id="@+id/bottomButtonTwo"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="#FFFFFF"
             android:orientation="vertical"
             android:layout_centerVertical="true"
@@ -63,28 +67,33 @@
             >
 
             <ImageView
+                android:id="@+id/bottomImageViewTwo"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="23.3dp"
+                android:layout_marginTop="8dp"
                 android:scaleType="fitCenter"
-                android:src="@android:drawable/ic_menu_gallery"
+                android:src="@drawable/common_button_main_select"
                 />
 
 
             <TextView
+                android:id="@+id/bottomTextViewTwo"
                 android:layout_width="match_parent"
-                android:layout_height="10dp"
+                android:layout_height="14dp"
+                android:layout_marginTop="4dp"
                 android:gravity="center"
                 android:text="企秘"
                 android:textColor="#000000"
-                android:textSize="@dimen/font_size_title"/>
+                android:textSize="10sp"/>
 
         </LinearLayout>
 
 
         <LinearLayout
-            android:id="@+id/mainButtonThree"
-            android:layout_width="80dp"
-            android:layout_height="50dp"
+            android:id="@+id/bottomButtonThree"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="#FFFFFF"
             android:orientation="vertical"
             android:layout_centerVertical="true"
@@ -95,24 +104,28 @@
             >
 
             <ImageView
+                android:id="@+id/bottomImageViewThree"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="23.3dp"
+                android:layout_marginTop="8dp"
                 android:scaleType="fitCenter"
-                android:src="@android:drawable/ic_menu_gallery"
+                android:src="@drawable/common_button_user_unselect"
                 />
 
 
             <TextView
+                android:id="@+id/bottomTextViewThree"
                 android:layout_width="match_parent"
-                android:layout_height="10dp"
+                android:layout_height="14dp"
+                android:layout_marginTop="4dp"
                 android:gravity="center"
                 android:text="我的"
                 android:textColor="#000000"
-                android:textSize="@dimen/font_size_title"/>
+                android:textSize="10sp"/>
 
         </LinearLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 
 
 
@@ -122,7 +135,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/mainBottomLayout"
-        android:background="@color/colorPrimaryDark">
+        android:background="@color/colorWhite">
     </android.support.v4.view.ViewPager>
 
 

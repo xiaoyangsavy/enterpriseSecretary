@@ -68,7 +68,7 @@ public class MessageAdapter extends BaseAdapter {
 
             holder.itemMessageTitleTextView.setText(myMessageMap.get("name").toString());
         holder.itemMessageDescriptionTextView.setText(myMessageMap.get("description").toString());
-
+        holder.itemMessageIconImageView.setImageResource((int)myMessageMap.get("image"));
         return convertView;
     }
 

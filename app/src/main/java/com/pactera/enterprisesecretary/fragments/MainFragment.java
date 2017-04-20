@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
@@ -27,7 +28,7 @@ public class MainFragment extends Fragment {
 
     private ScrollView mainScrollView = null;
 
-    private List<Map<String,String>> itemList = null;
+    private List<Map<String,Object>> itemList = null;
 
 
     public MainFragment() {
@@ -72,7 +73,7 @@ public class MainFragment extends Fragment {
 
         //每个scrollView的子视图
         for (int i = 0; i < this.itemList.size(); i++) {
-            Map<String,String> myMap = this.itemList.get(i);
+            Map<String,Object> myMap = this.itemList.get(i);
 
             View itemView = LayoutInflater.from(getActivity()).inflate(
                     R.layout.scrollview_main, null);
@@ -87,6 +88,8 @@ public class MainFragment extends Fragment {
             itemLyParam.topMargin = (i/2)*itemHeight;
             itemView.setLayoutParams(itemLyParam);
 
+            ImageView itemImageView = (ImageView)itemView.findViewById(R.id.itemMainIconImageView);
+            itemImageView.setImageResource((int)myMap.get("image"));
             scrollRelativeLayout.addView(itemView);
         }
         this.mainScrollView.addView(scrollRelativeLayout);

@@ -34,17 +34,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     SharedPreferences.Editor sedit = null;
 
 
-    private LinearLayout mainButtonOne = null;
-    private ImageView mainButtonIconOne = null;
-    private TextView mainButtonTextOne = null;
+    private LinearLayout  bottomButtonOne = null;
+    private ImageView bottomImageViewOne = null;
+    private TextView bottomTextViewOne = null;
 
-    private LinearLayout mainButtonTwo = null;
-    private ImageView mainButtonIconTwo = null;
-    private TextView mainButtonTextTwo = null;
+    private LinearLayout  bottomButtonTwo = null;
+    private ImageView bottomImageViewTwo = null;
+    private TextView bottomTextViewTwo = null;
 
-    private LinearLayout mainButtonThree = null;
-    private ImageView mainButtonIconThree = null;
-    private TextView mainButtonTextThree = null;
+    private LinearLayout  bottomButtonThree = null;
+    private ImageView bottomImageViewThree = null;
+    private TextView bottomTextViewThree = null;
     private Toast myToast;
 
 
@@ -60,12 +60,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
 
         //测试数据
-        this.itemList = new ArrayList<Map<String, String>>();
+        this.itemList = new ArrayList<Map<String, Object>>();
 
         for (int i = 0; i < 5; i++) {
-            Map<String, String> myMap = new HashMap<String, String>();
+            Map<String, Object> myMap = new HashMap<String, Object>();
             myMap.put("name", "加载中");
             myMap.put("description", "加载中......");
+            myMap.put("image",R.drawable.item_icon_test);
             this.itemList.add(myMap);
         }
 
@@ -101,33 +102,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fragments.add(userFragment);
         this.mainAdapter.notifyDataSetChanged();
 
+        //默认显示第二个页面
+        MainActivity.this.mainViewpager
+                .setCurrentItem(1);
+
         //底部按钮区域
-        this.mainButtonOne = (LinearLayout) super.findViewById(R.id.mainButtonOne);
-        this.mainButtonOne.setOnClickListener(this);
+        this.bottomButtonOne = (LinearLayout) super.findViewById(R.id.bottomButtonOne);
+        this.bottomButtonOne.setOnClickListener(this);
+        this.bottomImageViewOne = (ImageView) super.findViewById(R.id.bottomImageViewOne);
 
-        this.mainButtonTwo = (LinearLayout) super.findViewById(R.id.mainButtonTwo);
-        this.mainButtonTwo.setOnClickListener(this);
+        this.bottomButtonTwo = (LinearLayout) super.findViewById(R.id.bottomButtonTwo);
+        this.bottomButtonTwo.setOnClickListener(this);
+        this.bottomImageViewTwo = (ImageView) super.findViewById(R.id.bottomImageViewTwo);
 
-        this.mainButtonThree = (LinearLayout) super.findViewById(R.id.mainButtonThree);
-        this.mainButtonThree.setOnClickListener(this);
+        this.bottomButtonThree = (LinearLayout) super.findViewById(R.id.bottomButtonThree);
+        this.bottomButtonThree.setOnClickListener(this);
+        this.bottomImageViewThree = (ImageView) super.findViewById(R.id.bottomImageViewThree);
     }
 
     @Override
     public void onClick(View v) {
-        myToast = Toast.makeText(getApplicationContext(),
-                "点击了" + v.getId(), Toast.LENGTH_LONG);
-        myToast.setGravity(Gravity.CENTER, 0, 0);
-        myToast.show();
+//        myToast = Toast.makeText(getApplicationContext(),
+//                "点击了" + v.getId(), Toast.LENGTH_LONG);
+//        myToast.setGravity(Gravity.CENTER, 0, 0);
+//        myToast.show();
+        this.bottomImageViewOne.setImageResource(R.drawable.common_button_message_unselect);
+        this.bottomImageViewTwo.setImageResource(R.drawable.common_button_main_unselect);
+        this.bottomImageViewThree.setImageResource(R.drawable.common_button_user_unselect);
+
         switch (v.getId()) {
-            case R.id.mainButtonOne:
+            case R.id.bottomButtonOne:
+                this.bottomImageViewOne.setImageResource(R.drawable.common_button_message_select);
                 MainActivity.this.mainViewpager
                         .setCurrentItem(0);
                 break;
-            case R.id.mainButtonTwo:
+            case R.id.bottomButtonTwo:
+                this.bottomImageViewTwo.setImageResource(R.drawable.common_button_main_select);
                 MainActivity.this.mainViewpager
                         .setCurrentItem(1);
                 break;
-            case R.id.mainButtonThree:
+            case R.id.bottomButtonThree:
+                this.bottomImageViewThree.setImageResource(R.drawable.common_button_user_select);
                 MainActivity.this.mainViewpager
                         .setCurrentItem(2);
                 break;

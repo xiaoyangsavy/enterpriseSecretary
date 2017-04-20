@@ -3,8 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<ImageView
+    <!-- 定义item高度，强制获取焦点和点击事件-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="67.3dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:descendantFocusability="blocksDescendants">
 
+    <ImageView
     android:id="@+id/itemMessageIconImageView"
     android:layout_width="40dp"
     android:layout_height="40dp"
@@ -15,12 +22,12 @@
     
     <TextView
         android:id="@+id/itemMessageTitleTextView"
-        android:layout_width="70dp"
+        android:layout_width="100dp"
         android:layout_height="20dp"
         android:layout_toRightOf="@id/itemMessageIconImageView"
         android:layout_alignTop="@id/itemMessageIconImageView"
-        android:layout_marginTop="4dp"
-        android:layout_marginLeft="7dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="16dp"
         android:gravity="center_vertical"
         android:text="加载中"
         android:textSize="17sp"
@@ -34,7 +41,7 @@
         android:layout_marginTop="16.7dp"
         android:layout_alignParentRight="true"
         android:gravity="right|center_vertical"
-        android:text="加载中"
+        android:text="00:00"
         android:textSize="@dimen/font_size_description"
         android:textColor="@color/colorGray"/>
 
@@ -42,15 +49,22 @@
         android:id="@+id/itemMessageDescriptionTextView"
         android:layout_width="match_parent"
         android:layout_height="20dp"
-        android:layout_toRightOf="@id/itemMessageIconImageView"
         android:layout_toLeftOf="@id/itemMessageDateTextView"
+        android:layout_alignLeft="@id/itemMessageTitleTextView"
         android:layout_alignBottom="@id/itemMessageIconImageView"
-        android:layout_marginLeft="7dp"
         android:gravity="center_vertical"
         android:text="加载中......"
         android:textSize="13.3sp"
         android:textColor="@color/colorGray"/>
 
 
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorLimit" />
 
+
+
+</RelativeLayout>
 </RelativeLayout>
