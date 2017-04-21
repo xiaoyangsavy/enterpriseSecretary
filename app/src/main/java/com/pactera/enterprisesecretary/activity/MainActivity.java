@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -90,6 +91,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.mainViewpager = (ViewPager) super.findViewById(R.id.mainViewpager);
         this.mainAdapter = new ViewPagerAdapter(getSupportFragmentManager(), fragments);
         this.mainViewpager.setAdapter(this.mainAdapter);
+        this.mainViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Log.d("savy", "setCurrentItem()被调用后执行，位置为: "+position);
+
+                MainActivity.this.bottomImageViewOne.setImageResource(R.drawable.common_button_message_unselect);
+                MainActivity.this.bottomImageViewTwo.setImageResource(R.drawable.common_button_main_unselect);
+                MainActivity.this.bottomImageViewThree.setImageResource(R.drawable.common_button_user_unselect);
+
+                switch(position)
+                {
+                    case 0:
+                        MainActivity.this.bottomImageViewOne.setImageResource(R.drawable.common_button_message_select);
+                        break;
+                    case 1:
+                        MainActivity.this.bottomImageViewTwo.setImageResource(R.drawable.common_button_main_select);
+                        break;
+                    case 2:
+                        MainActivity.this.bottomImageViewThree.setImageResource(R.drawable.common_button_user_select);
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+
+
 
         //创建切换页面
         Bundle bundle = new Bundle();
@@ -102,9 +142,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fragments.add(userFragment);
         this.mainAdapter.notifyDataSetChanged();
 
-        //默认显示第二个页面
-        MainActivity.this.mainViewpager
-                .setCurrentItem(1);
 
         //底部按钮区域
         this.bottomButtonOne = (LinearLayout) super.findViewById(R.id.bottomButtonOne);
@@ -118,6 +155,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.bottomButtonThree = (LinearLayout) super.findViewById(R.id.bottomButtonThree);
         this.bottomButtonThree.setOnClickListener(this);
         this.bottomImageViewThree = (ImageView) super.findViewById(R.id.bottomImageViewThree);
+
+
+        //默认显示第二个页面
+        //需写在最后的位置，不然onPageSelected()方法里面的内容可能没有实例化完成就被调用
+        MainActivity.this.mainViewpager
+                .setCurrentItem(1);
     }
 
     @Override
@@ -126,26 +169,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                "点击了" + v.getId(), Toast.LENGTH_LONG);
 //        myToast.setGravity(Gravity.CENTER, 0, 0);
 //        myToast.show();
-        this.bottomImageViewOne.setImageResource(R.drawable.common_button_message_unselect);
-        this.bottomImageViewTwo.setImageResource(R.drawable.common_button_main_unselect);
-        this.bottomImageViewThree.setImageResource(R.drawable.common_button_user_unselect);
+//        this.bottomImageViewOne.setImageResource(R.drawable.common_button_message_unselect);
+//        this.bottomImageViewTwo.setImageResource(R.drawable.common_button_main_unselect);
+//        this.bottomImageViewThree.setImageResource(R.drawable.common_button_user_unselect);
 
         switch (v.getId()) {
             case R.id.bottomButtonOne:
-                this.bottomImageViewOne.setImageResource(R.drawable.common_button_message_select);
+//                this.bottomImageViewOne.setImageResource(R.drawable.common_button_message_select);
                 MainActivity.this.mainViewpager
                         .setCurrentItem(0);
                 break;
             case R.id.bottomButtonTwo:
-                this.bottomImageViewTwo.setImageResource(R.drawable.common_button_main_select);
+//                this.bottomImageViewTwo.setImageResource(R.drawable.common_button_main_select);
                 MainActivity.this.mainViewpager
                         .setCurrentItem(1);
                 break;
             case R.id.bottomButtonThree:
-                this.bottomImageViewThree.setImageResource(R.drawable.common_button_user_select);
+//                this.bottomImageViewThree.setImageResource(R.drawable.common_button_user_select);
                 MainActivity.this.mainViewpager
                         .setCurrentItem(2);
                 break;
         }
     }
+
+
 }
