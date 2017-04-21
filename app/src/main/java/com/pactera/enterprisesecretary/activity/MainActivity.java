@@ -129,8 +129,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
 
-
-
         //创建切换页面
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("itemList", this.itemList);

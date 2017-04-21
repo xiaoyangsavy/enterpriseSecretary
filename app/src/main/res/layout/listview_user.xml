@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 定义item高度，强制获取焦点和点击事件-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="67.3dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:descendantFocusability="blocksDescendants">
+
+    <ImageView
+    android:id="@+id/itemUserIconImageView"
+    android:layout_width="30dp"
+    android:layout_height="30dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="17dp"
+    android:src="@android:drawable/ic_menu_gallery"
+    android:scaleType="fitCenter"/>
+    
+    <TextView
+        android:id="@+id/itemUserTitleTextView"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:layout_toRightOf="@id/itemUserIconImageView"
+        android:layout_alignTop="@id/itemUserIconImageView"
+        android:layout_marginLeft="13dp"
+        android:text="加载中"
+        android:textSize="@dimen/font_size_title"
+        android:textColor="#333333"/>
+
+    <TextView
+        android:id="@+id/itemUserDescriptionTextView"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="6dp"
+        android:layout_below="@id/itemUserTitleTextView"
+        android:layout_alignLeft="@id/itemUserTitleTextView"
+        android:text="加载中......"
+        android:textSize="@dimen/font_size_description"
+        android:textColor="@color/colorGray"/>
+
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorLimit" />
+
+
+
+</RelativeLayout>
+</RelativeLayout>

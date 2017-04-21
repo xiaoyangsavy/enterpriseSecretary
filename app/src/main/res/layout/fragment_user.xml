@@ -1,13 +1,76 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     tools:context="com.pactera.enterprisesecretary.fragments.UserFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
+        android:id="@+id/userHeadLayout"
+        android:layout_width="match_parent"
+        android:layout_height="112dp"
+        android:layout_alignParentTop="true"
+        >
+
+
+        <ImageView
+            android:id="@+id/userHeadImageView"
+            android:layout_width="67.3dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="1dp"
+            android:src="@drawable/user_head"
+            android:scaleType="fitCenter"/>
+
+
+        <TextView
+            android:id="@+id/userTitleTextView"
+            android:layout_width="100dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="1dp"
+            android:layout_toRightOf="@id/userHeadImageView"
+            android:text="请登录"
+            android:gravity="center"
+            android:textColor="#4e515e"
+            android:textSize="@dimen/font_size_title"
+            />
+
+        <ImageView
+            android:id="@+id/userArrowImageView"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="1dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/common_arrow_righht"
+            android:scaleType="fitCenter"/>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:layout_alignTop="@id/userHeadLayout"
+        android:background="@color/colorLimit" />
+
+
+    <ListView
+        android:id="@+id/userListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_below="@id/userHeadLayout"
+        android:cacheColorHint="#00000000"
+        android:divider="@null"
+        android:dividerHeight="0dip"
+        android:listSelector="#00000000"
+        android:scrollbars="none" >
+    </ListView>
 
-</FrameLayout>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dp"
+        android:layout_alignTop="@id/userListView"
+        android:background="@color/colorLimit" />
+</RelativeLayout>
