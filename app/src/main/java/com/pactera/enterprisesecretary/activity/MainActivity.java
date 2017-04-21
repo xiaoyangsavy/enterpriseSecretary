@@ -4,11 +4,10 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,13 +26,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends MyBaseActivity implements View.OnClickListener {
 
     private int height = 0;
     private int width = 0;
     SharedPreferences share = null;
     SharedPreferences.Editor sedit = null;
 
+
+    private View actionBarView = null;
 
     private LinearLayout  bottomButtonOne = null;
     private ImageView bottomImageViewOne = null;
@@ -62,7 +63,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //测试数据
         this.itemList = new ArrayList<Map<String, Object>>();
-
         for (int i = 0; i < 5; i++) {
             Map<String, Object> myMap = new HashMap<String, Object>();
             myMap.put("name", "加载中");
@@ -71,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             this.itemList.add(myMap);
         }
 
+        //隐藏标题栏按钮
+        super.hiddenButton();
 
         //获取屏幕尺寸
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -92,15 +94,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         this.mainAdapter = new ViewPagerAdapter(getSupportFragmentManager(), fragments);
         this.mainViewpager.setAdapter(this.mainAdapter);
         this.mainViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            //滚动结束
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
             }
 
+            //子页面切换时
             @Override
             public void onPageSelected(int position) {
                 Log.d("savy", "setCurrentItem()被调用后执行，位置为: "+position);
 
+                //隐藏标题栏按钮
+                MainActivity.super.hiddenButton();
+                //重置底部图片
                 MainActivity.this.bottomImageViewOne.setImageResource(R.drawable.common_button_message_unselect);
                 MainActivity.this.bottomImageViewTwo.setImageResource(R.drawable.common_button_main_unselect);
                 MainActivity.this.bottomImageViewThree.setImageResource(R.drawable.common_button_user_unselect);
@@ -108,12 +115,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 switch(position)
                 {
                     case 0:
+                        MainActivity.super.setTitle("消息");
                         MainActivity.this.bottomImageViewOne.setImageResource(R.drawable.common_button_message_select);
                         break;
                     case 1:
+                        MainActivity.super.setTitle("企秘");
                         MainActivity.this.bottomImageViewTwo.setImageResource(R.drawable.common_button_main_select);
                         break;
                     case 2:
+                        MainActivity.super.setTitle("我");
+                        MainActivity.super.showGoButton();
                         MainActivity.this.bottomImageViewThree.setImageResource(R.drawable.common_button_user_select);
                         break;
                     default:
@@ -122,6 +133,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             }
 
+            //在状态改变的时候调用,1:正在滑动，2：滑动完毕，3：什么都没有做
             @Override
             public void onPageScrollStateChanged(int state) {
 

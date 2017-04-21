@@ -20,7 +20,7 @@ import java.util.Map;
 
 public class UserFragment extends Fragment {
 
-    private List<Map<String,Object>> itemList = null;
+    private List<Map<String, Object>> itemList = null;
     private ListView userListView = null;
     private UserAdapter userAdapter;
 
@@ -38,28 +38,28 @@ public class UserFragment extends Fragment {
         super.onCreate(savedInstanceState);
         //获取传入信息
         Bundle bundle = getArguments();
-        this.itemList =  (ArrayList)bundle
+        this.itemList = (ArrayList) bundle
                 .getParcelableArrayList("itemList");
         //初始化选项列表
         this.itemList = new ArrayList<Map<String, Object>>();
 
-            Map<String, Object> myMap = null;
-            myMap = new HashMap<String, Object>();
-            myMap.put("name", "个人信息");
-            myMap.put("description", "输入你相关信息 有所变更及时改");
-            myMap.put("image",R.drawable.user_info);
-            this.itemList.add(myMap);
+        Map<String, Object> myMap = null;
+        myMap = new HashMap<String, Object>();
+        myMap.put("name", "个人信息");
+        myMap.put("description", "输入你相关信息 有所变更及时改");
+        myMap.put("image", R.drawable.user_info);
+        this.itemList.add(myMap);
 
         myMap = new HashMap<String, Object>();
         myMap.put("name", "工作中心");
         myMap.put("description", "随时知道职位 牢记工作职责");
-        myMap.put("image",R.drawable.user_work);
+        myMap.put("image", R.drawable.user_work);
         this.itemList.add(myMap);
 
         myMap = new HashMap<String, Object>();
         myMap.put("name", "公司地址");
         myMap.put("description", "告诉企秘公司名 掌握实时路况");
-        myMap.put("image",R.drawable.user_location);
+        myMap.put("image", R.drawable.user_location);
         this.itemList.add(myMap);
 
 
@@ -73,7 +73,7 @@ public class UserFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_user, container,
                 false);
 
-        userListView = (ListView)view.findViewById(R.id.userListView);
+        userListView = (ListView) view.findViewById(R.id.userListView);
         userAdapter = new UserAdapter(getActivity(), this.itemList);
         userListView.setAdapter(userAdapter);
 
