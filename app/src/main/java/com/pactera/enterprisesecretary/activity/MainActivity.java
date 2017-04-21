@@ -105,8 +105,10 @@ public class MainActivity extends MyBaseActivity implements View.OnClickListener
             public void onPageSelected(int position) {
                 Log.d("savy", "setCurrentItem()被调用后执行，位置为: "+position);
 
-                //隐藏标题栏按钮
-                MainActivity.super.hiddenButton();
+
+                MainActivity.super.hiddenButton(); //隐藏导航栏按钮
+                MainActivity.super.showLimit();//显示导航栏底部分割线
+
                 //重置底部图片
                 MainActivity.this.bottomImageViewOne.setImageResource(R.drawable.common_button_message_unselect);
                 MainActivity.this.bottomImageViewTwo.setImageResource(R.drawable.common_button_main_unselect);
@@ -120,6 +122,7 @@ public class MainActivity extends MyBaseActivity implements View.OnClickListener
                         break;
                     case 1:
                         MainActivity.super.setTitle("企秘");
+                        MainActivity.super.hiddenLimit();
                         MainActivity.this.bottomImageViewTwo.setImageResource(R.drawable.common_button_main_select);
                         break;
                     case 2:

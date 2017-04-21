@@ -22,6 +22,7 @@ public class MyBaseActivity extends AppCompatActivity {
     public RelativeLayout goButton = null;
     public ImageView goImageViiew = null;
     public TextView titleTextView = null;
+    public View limitView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,7 @@ public class MyBaseActivity extends AppCompatActivity {
         this.titleTextView = (TextView) this.myActionBarView.findViewById(R.id.actionBarTitleTextView);
         this.goButton = (RelativeLayout) this.myActionBarView.findViewById(R.id.actionBarGoButton);
         this.goImageViiew = (ImageView) this.myActionBarView.findViewById(R.id.actionBarGoImageView);
-
+        this.limitView = (View) this.myActionBarView.findViewById(R.id.actionBarLimit);
 
         this.actionBar = getSupportActionBar();
         actionBar.setCustomView(this.myActionBarView, ActionBarLayout);
@@ -53,6 +54,7 @@ public class MyBaseActivity extends AppCompatActivity {
     public void hiddenActionBar() {
         this.actionBar.hide();
     }
+
     //显示actionBar
     public void showActionBar() {
         this.actionBar.show();
@@ -95,5 +97,13 @@ public class MyBaseActivity extends AppCompatActivity {
         this.titleTextView.setText(title);
     }
 
+    //隐藏底部分割线
+    public void hiddenLimit() {
+        this.limitView.setVisibility(View.GONE);
+    }
 
+    //显示底部分割线
+    public void showLimit() {
+        this.limitView.setVisibility(View.VISIBLE);
+    }
 }
