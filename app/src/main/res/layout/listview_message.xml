@@ -26,12 +26,12 @@
         android:layout_height="20dp"
         android:layout_toRightOf="@id/itemMessageIconImageView"
         android:layout_alignTop="@id/itemMessageIconImageView"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="0dp"
         android:layout_marginLeft="16dp"
         android:gravity="center_vertical"
         android:text="加载中"
-        android:textSize="17sp"
-        android:textColor="@color/colorGray"/>
+        android:textSize="16.7sp"
+        android:textColor="@color/colorBlack"/>
 
     <TextView
         android:id="@+id/itemMessageDateTextView"

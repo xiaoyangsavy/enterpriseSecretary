@@ -68,7 +68,7 @@ public class MainFragment extends Fragment {
         //中部的滚动视图区域
         this.mainScrollView = (ScrollView) view.findViewById(R.id.mainScrollView);
         int itemWidth = width/2;
-        int itemHeight = width/4;
+        int itemHeight = (int)(itemWidth*0.437);//236dx
         RelativeLayout scrollRelativeLayout = new RelativeLayout(getActivity());//相对布局
 
         //每个scrollView的子视图
