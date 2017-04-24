@@ -2,7 +2,143 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorGray" >
+    android:orientation="vertical" >
 
 
-    </RelativeLayout>
+    <!-- 底部功能布局！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！ -->
+
+    <LinearLayout
+        android:id="@+id/chatBottomLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="#cdcdcd" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="#FFF"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:id="@+id/chatRightView"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/chatMoreButton"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginBottom="5dip"
+                android:layout_marginRight="10dip"
+                android:layout_marginTop="5dip"
+                android:background="@color/colorGray"
+                android:text="更多"
+                android:textColor="#ffffff" />
+
+                <Button
+                    android:id="@+id/chatSendButton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginBottom="5dip"
+                    android:layout_marginRight="10dip"
+                    android:layout_marginTop="5dip"
+                    android:background="@color/colorGray"
+                    android:text="发送"
+                    android:textColor="#ffffff" />
+
+            </LinearLayout>
+
+
+            <ImageButton
+                android:id="@+id/chatTypeButton"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:scaleType="fitCenter"
+                android:src="@android:drawable/ic_menu_add"/>
+
+
+            <View
+                android:id="@+id/chatVoiceButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="录音"
+                android:visibility="gone" />
+
+
+            <EditText
+                android:id="@+id/chatMessageEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dip"
+                android:layout_marginTop="5dip"
+                android:layout_toRightOf="@id/chatTypeButton"
+                android:layout_toLeftOf="@id/chatRightView"
+                android:maxLines="3"
+                android:minHeight="40dp"
+                 />
+        </RelativeLayout>
+
+        <!-- 客户版单聊，功能布局！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！ -->
+
+        <RelativeLayout
+            android:id="@+id/chatMoreView"
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="40dp"
+            android:layout_marginTop="10dp"
+            android:visibility="gone" >
+
+            <ScrollView
+                android:id="@+id/chatMoreScrollView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/chatMoreButton01"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginRight="20dp"
+                android:background="@android:drawable/ic_menu_add"
+                android:visibility="gone" />
+
+            </ScrollView>
+        </RelativeLayout>
+    </LinearLayout>
+
+
+    <!-- 聊天内容列表！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！ -->
+
+    <ListView
+        android:id="@+id/multiChatList"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@id/chatBottomLayout"
+        android:background="#f4f4f4"
+        android:cacheColorHint="#00000000"
+        android:divider="@null"
+        android:dividerHeight="0dip"
+        android:listSelector="@color/colorLimit"
+        android:scrollbars="none"
+        android:stackFromBottom="true"
+        android:transcriptMode="alwaysScroll" />
+
+</RelativeLayout>
