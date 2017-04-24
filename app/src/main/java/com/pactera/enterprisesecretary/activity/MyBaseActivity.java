@@ -36,6 +36,12 @@ public class MyBaseActivity extends AppCompatActivity {
         ActionBar.LayoutParams ActionBarLayout = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT, Gravity.CENTER);
         this.myActionBarView = LayoutInflater.from(this).inflate(R.layout.actionbar_layout, null);
         this.backButton = (RelativeLayout) this.myActionBarView.findViewById(R.id.actionBarBackButton);
+        this.backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyBaseActivity.this.finish();//返回上一页
+            }
+        });
         this.backImageViiew = (ImageView) this.myActionBarView.findViewById(R.id.actionBarBackImageView);
         this.titleTextView = (TextView) this.myActionBarView.findViewById(R.id.actionBarTitleTextView);
         this.goButton = (RelativeLayout) this.myActionBarView.findViewById(R.id.actionBarGoButton);
@@ -48,6 +54,9 @@ public class MyBaseActivity extends AppCompatActivity {
         actionBar.setDisplayShowCustomEnabled(true);
         actionBar.setDisplayShowHomeEnabled(false);
         actionBar.setDisplayShowTitleEnabled(false);
+
+
+
     }
 
     //隐藏actionBar

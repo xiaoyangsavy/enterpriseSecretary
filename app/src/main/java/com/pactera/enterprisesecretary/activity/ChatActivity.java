@@ -6,7 +6,7 @@ import android.os.Bundle;
 import com.pactera.enterprisesecretary.R;
 
 //聊天页面
-public class ChatActivity extends AppCompatActivity {
+public class ChatActivity extends MyBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

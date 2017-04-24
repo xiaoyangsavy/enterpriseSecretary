@@ -1,17 +1,20 @@
 package com.pactera.enterprisesecretary.fragments;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 
 import com.pactera.enterprisesecretary.R;
+import com.pactera.enterprisesecretary.activity.ChatActivity;
 import com.pactera.enterprisesecretary.util.StaticProperty;
 
 import java.util.ArrayList;
@@ -19,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements View.OnClickListener{
 
     private int height = 0;
     private int width = 0;
@@ -27,6 +30,8 @@ public class MainFragment extends Fragment {
     SharedPreferences.Editor sedit = null;
 
     private ScrollView mainScrollView = null;
+    private ImageButton mainTopVoiceButton = null;
+    private ImageButton mainTopButton = null;
 
     private List<Map<String,Object>> itemList = null;
 
@@ -65,7 +70,15 @@ public class MainFragment extends Fragment {
         width = share.getInt(StaticProperty.SCREENWIDTH,480);
         height = share.getInt(StaticProperty.SCREENHEIGHT,800);
 
-        //中部的滚动视图区域
+        //按钮
+        this.mainTopVoiceButton = (ImageButton)view.findViewById(R.id.mainTopVoiceButton);
+        this.mainTopVoiceButton.setOnClickListener(this);
+        this.mainTopButton = (ImageButton)view.findViewById(R.id.mainTopButton);
+        this.mainTopButton.setOnClickListener(this);
+
+
+
+                //中部的滚动视图区域
         this.mainScrollView = (ScrollView) view.findViewById(R.id.mainScrollView);
         int itemWidth = width/2;
         int itemHeight = (int)(itemWidth*0.437);//236dx
@@ -94,11 +107,22 @@ public class MainFragment extends Fragment {
         }
         this.mainScrollView.addView(scrollRelativeLayout);
 
-
         return view;
     }
 
 
-
-
+    @Override
+    public void onClick(View v) {
+        Intent intent = new Intent(getActivity(), ChatActivity.class);
+        switch (v.getId()) {
+            case R.id.mainTopVoiceButton:
+                startActivity(intent);
+                break;
+            case R.id.mainTopButton:
+                startActivity(intent);
+                break;
+        default:
+            break;
+        }
+    }
 }
