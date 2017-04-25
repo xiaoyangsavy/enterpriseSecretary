@@ -12,4 +12,8 @@ public class StaticProperty {
     public static final String SCREENHEIGHT = "screenHeight"; //屏幕高度
     public static final String ISFIRSTLOGIN = "isFirstLogin"; //首次登陆
     public static final String BRAND = "phoneBrand";//手机品牌
+
+    public static final String CHATINFO = "chat"; // 聊天内容为文本信息
+    public static final String CHATIMAGE = "image"; // 聊天内容为图片信息
+    public static final String CHATVOICE = "voice"; // 聊天内容为声音信息
 }

@@ -15,14 +15,16 @@ import com.pactera.enterprisesecretary.R;
 //activity公共基类
 public class MyBaseActivity extends AppCompatActivity {
 
-    public ActionBar actionBar = null;
-    public View myActionBarView = null;
-    public RelativeLayout backButton = null;
-    public ImageView backImageViiew = null;
-    public RelativeLayout goButton = null;
-    public ImageView goImageViiew = null;
-    public TextView titleTextView = null;
-    public View limitView = null;
+    protected String TAG = "SAVY";
+
+    protected ActionBar actionBar = null;
+    protected View myActionBarView = null;
+    protected RelativeLayout backButton = null;
+    protected ImageView backImageViiew = null;
+    protected RelativeLayout goButton = null;
+    protected ImageView goImageViiew = null;
+    protected TextView titleTextView = null;
+    protected View limitView = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +35,7 @@ public class MyBaseActivity extends AppCompatActivity {
 
     //自定义actionBar，需要配置文件中主题的自定义样式的支持
     private void setCustomActionBar() {
+        //创建导航栏视图
         ActionBar.LayoutParams ActionBarLayout = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT, Gravity.CENTER);
         this.myActionBarView = LayoutInflater.from(this).inflate(R.layout.actionbar_layout, null);
         this.backButton = (RelativeLayout) this.myActionBarView.findViewById(R.id.actionBarBackButton);
@@ -48,6 +51,7 @@ public class MyBaseActivity extends AppCompatActivity {
         this.goImageViiew = (ImageView) this.myActionBarView.findViewById(R.id.actionBarGoImageView);
         this.limitView = (View) this.myActionBarView.findViewById(R.id.actionBarLimit);
 
+        //创建导航栏并加载视图
         this.actionBar = getSupportActionBar();
         actionBar.setCustomView(this.myActionBarView, ActionBarLayout);
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);//设置为自定义样式
