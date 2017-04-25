@@ -90,7 +90,6 @@ public class MainFragment extends Fragment implements View.OnClickListener{
 
             View itemView = LayoutInflater.from(getActivity()).inflate(
                     R.layout.scrollview_main, null);
-
             RelativeLayout.LayoutParams itemLyParam = new RelativeLayout.LayoutParams(
                     itemWidth, itemHeight);
             if(i%2==0) {
@@ -103,6 +102,8 @@ public class MainFragment extends Fragment implements View.OnClickListener{
 
             ImageView itemImageView = (ImageView)itemView.findViewById(R.id.itemMainIconImageView);
             itemImageView.setImageResource((int)myMap.get("image"));
+            itemView.setTag("itemView"+i);//设置子视图编号
+            itemView.setOnClickListener(this);
             scrollRelativeLayout.addView(itemView);
         }
         this.mainScrollView.addView(scrollRelativeLayout);
@@ -114,16 +115,15 @@ public class MainFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View v) {
         Intent intent = new Intent(getActivity(), ChatActivity.class);
-        switch (v.getId()) {
-            case R.id.mainTopVoiceButton:
-                startActivity(intent);
-                break;
-            case R.id.mainTopButton:
-                startActivity(intent);
-                break;
-        default:
-            break;
-        }
+        startActivity(intent);
+//        switch (v.getId()) {
+//            case R.id.mainTopVoiceButton:
+//                break;
+//            case R.id.mainTopButton:
+//                break;
+//        default:
+//            break;
+//        }
 
     }
 }

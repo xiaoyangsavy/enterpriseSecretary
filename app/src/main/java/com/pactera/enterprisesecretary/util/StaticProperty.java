@@ -1,5 +1,9 @@
 package com.pactera.enterprisesecretary.util;
 
+import android.os.Environment;
+
+import java.io.File;
+
 /**
  * 全局静态属性，保存必要信息
  * Created by xiaoyang on 2017/4/18.
@@ -16,4 +20,9 @@ public class StaticProperty {
     public static final String CHATINFO = "chat"; // 聊天内容为文本信息
     public static final String CHATIMAGE = "image"; // 聊天内容为图片信息
     public static final String CHATVOICE = "voice"; // 聊天内容为声音信息
+    // 文件存储文件夹路径
+    public static final String FILEPATH = Environment
+            .getExternalStorageDirectory().toString()
+            + File.separator
+            + "enterpriseSecretery" + File.separator;
 }

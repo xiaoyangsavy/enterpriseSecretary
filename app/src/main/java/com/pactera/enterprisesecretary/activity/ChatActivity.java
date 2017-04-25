@@ -1,5 +1,14 @@
 package com.pactera.enterprisesecretary.activity;
 
+import android.content.ActivityNotFoundException;
+import android.content.ContentValues;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -10,6 +19,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AbsListView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -19,11 +29,13 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
+import com.pactera.enterprisesecretary.BuildConfig;
 import com.pactera.enterprisesecretary.R;
 import com.pactera.enterprisesecretary.adapter.ChatAdapter;
 import com.pactera.enterprisesecretary.module.ChatMessage;
 import com.pactera.enterprisesecretary.util.StaticProperty;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,6 +56,8 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
     private ListView chatListView = null;// 信息显示列表
     private List<ChatMessage> messageList = null;
     public ChatAdapter chatAdapter= null;
+
+    private String photoName;// 随机生成的照片名
 
 
     //位移动画
@@ -134,28 +148,116 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
                 }
                 break;
             case R.id.chatSendButton:// 点击发送按钮
-                String message = this.chatMessageEditText.getText().toString();
-                if (message == null || message.equals("")) {
-                    Toast.makeText(ChatActivity.this, "内容不能为空",
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    Log.i(TAG, "msg" + message);
-                    ChatMessage chatMessage = new ChatMessage();
-                    chatMessage.setMessageFlag(true);
-                    Date sentDate = new Date();
-                    SimpleDateFormat sdf = new SimpleDateFormat(
-                            "yyyy-MM-dd HH:mm:ss");
-                    chatMessage.setSentTime(sdf.format(sentDate));
-                    chatMessage.setType(StaticProperty.CHATINFO);// 存入信息类型
-                    chatMessage.setMessage(message);
-                    messageList.add(chatMessage);
-                    //istview随item的增加而向上滚动
-                    this.chatListView
-                            .setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
-                    chatAdapter.notifyDataSetChanged();
-                    Log.i(TAG, "发送完成" + message);
+                if(view.getTag().equals("1")){//发送文本
+                    String message = this.chatMessageEditText.getText().toString();
+                    if (message == null || message.equals("")) {
+                        Toast.makeText(ChatActivity.this, "内容不能为空",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        Log.i(TAG, "msg" + message);
+                        ChatMessage chatMessage = new ChatMessage();
+                        chatMessage.setMessageFlag(true);
+                        Date sentDate = new Date();
+                        SimpleDateFormat sdf = new SimpleDateFormat(
+                                "yyyy-MM-dd HH:mm:ss");
+                        chatMessage.setSentTime(sdf.format(sentDate));
+                        chatMessage.setType(StaticProperty.CHATINFO);// 存入信息类型
+                        chatMessage.setMessage(message);
+                        messageList.add(chatMessage);
+                        //istview随item的增加而向上滚动
+                        this.chatListView
+                                .setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+                        chatAdapter.notifyDataSetChanged();
+                        Log.i(TAG, "发送完成" + message);
+                        this.chatMessageEditText.setText("");
+                    }
+                }else{//发送图片
+                    String[] choices = new String[2];
+                    choices[0] = "拍照";
+                    choices[1] = "从相册中获取";
+                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                            ChatActivity.this,
+                            android.R.layout.simple_expandable_list_item_1, choices);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(
+                            ChatActivity.this);
+                    builder.setTitle("请选择图片方式");
+                    builder.setSingleChoiceItems(adapter, -1,
+                            new DialogInterface.OnClickListener() {
 
-                    this.chatMessageEditText.setText("");
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    switch (which) {
+                                        // 点击拍照按钮
+                                        case 0:
+                                            // 先验证手机是否有sdcard
+                                            String status = Environment
+                                                    .getExternalStorageState();
+                                            if (status.equals(Environment.MEDIA_MOUNTED)) {
+                                                try {
+                                                    ChatActivity.this.photoName = "coolatin_"
+                                                            + System.currentTimeMillis()
+                                                            + ".jpg";
+//                                                    String fileName = StaticProperty.FILEPATH
+//                                                            + photoName;
+//                                                    File file = new File(fileName);
+//                                                    if (!file.getParentFile().exists()) {
+//                                                        file.getParentFile().mkdirs();
+//                                                    }
+//
+//                                                    if (!file.getParentFile().exists())file.getParentFile().mkdirs();
+
+
+                                                    File imagePath = new File(getFilesDir(), "Videos");
+                                                    File newFile = new File(imagePath, photoName);
+
+
+                                                    Uri imageUri = FileProvider.getUriForFile(ChatActivity.this,"com.wow.fileprovider", newFile);//通过FileProvider创建一个content类型的Uri
+                                                    Intent intent = new Intent();
+                                                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //添加这一句表示对目标应用临时授权该Uri所代表的文件
+                                                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);//设置Action为拍照
+                                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);//将拍取的照片保存到指定URI
+                                                    startActivityForResult(intent,1006);
+
+
+
+
+                                                } catch (ActivityNotFoundException e) {
+                                                    // TODO Auto-generated catch block
+                                                    Toast.makeText(
+                                                            ChatActivity.this,
+                                                            "没有找到储存目录", Toast.LENGTH_LONG)
+                                                            .show();
+                                                }
+                                            } else {
+                                                Toast.makeText(
+                                                        ChatActivity.this,
+                                                        "没有储存卡", Toast.LENGTH_LONG).show();
+                                            }
+                                            break;
+                                        // 点击从相册中选择照片
+                                        case 1:
+                                            Intent intent2 = new Intent(
+                                                    Intent.ACTION_PICK,
+                                                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                            startActivityForResult(intent2, 11);
+                                            // Intent intent2=new
+                                            // Intent(Intent.ACTION_GET_CONTENT);
+                                            // intent2.addCategory(Intent.CATEGORY_OPENABLE);
+                                            // intent2.setType("image/*");
+                                            // intent2.putExtra("crop", "true");
+                                            // intent2.putExtra("aspectX", 1);
+                                            // intent2.putExtra("aspectY", 1);
+                                            // intent2.putExtra("outputX", 80);
+                                            // intent2.putExtra("outputY", 80);
+                                            // intent2.putExtra("return-data", true);
+                                            // startActivityForResult(intent2, 11);
+                                            break;
+                                    }
+                                }
+                            });
+                    builder.create().show();
+
                 }
                 break;
             default:
