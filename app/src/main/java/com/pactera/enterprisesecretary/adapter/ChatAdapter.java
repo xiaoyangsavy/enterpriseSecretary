@@ -20,8 +20,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pactera.enterprisesecretary.R;
+import com.pactera.enterprisesecretary.activity.CommonBigImageActivity;
 import com.pactera.enterprisesecretary.custom.CircleImageview;
 import com.pactera.enterprisesecretary.module.ChatMessage;
+import com.pactera.enterprisesecretary.util.CommonUtil;
 import com.pactera.enterprisesecretary.util.StaticProperty;
 
 import java.util.List;
@@ -35,7 +37,7 @@ import java.util.regex.Pattern;
  */
 public class ChatAdapter extends BaseAdapter {
 
-	private String TAG = "chat";
+    public CommonUtil commonUtil = new CommonUtil();//工具类
 
 	private Activity context;
 	private List<ChatMessage> chatMessageList;
@@ -69,7 +71,7 @@ public class ChatAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup viewGroup) {
 		final ChatMessage chatMessage = chatMessageList.get(position);
-		Log.e(TAG, position + "" + chatMessage.isMessageFlag() + "type:"
+		Log.e("savy", position + "" + chatMessage.isMessageFlag() + "type:"
 				+ chatMessage.getType());
 
 
@@ -121,23 +123,18 @@ public class ChatAdapter extends BaseAdapter {
 				} else if (chatMessage.getType().equals(
 						StaticProperty.CHATIMAGE)) {// 图片
 					message_content.setVisibility(View.GONE);
-					// Log.e(TAG,"图片内容"+
-					// "!!!"+chatMessage.getImage().toString().equals(StaticProperty.CHATIP)
-					// + "!!!!!!"
-					// + chatMessage.getImage().toString().equals("http:")+
-					// "!!!!!!"
-					// + chatMessage.getImage().split("http://").length);
+
 					Pattern pattern = Pattern.compile("(http://){1}");
 					// 空格结束
-					Matcher matcher = pattern.matcher(chatMessage.getImage());
-					// if (matcher.find()) {
-					// Log.e(TAG,"正则表达式："+matcher.group(0));
-					// }
+					Matcher matcher = null;
+					if(chatMessage.getImagePath()!=null&&!"".equals(chatMessage.getImagePath())) {
+						 matcher = pattern.matcher(chatMessage.getImagePath());
+					}
 					if (matcher.find()) {// 网络图片,从历史记录中获取的图片为网络图片
 						chat_message_img_right.setVisibility(View.VISIBLE);
 						chat_message_img_right_send.setVisibility(View.GONE);
 						// 图片网址转换
-						Log.e("savvy", "发送方网络图片:" + chatMessage.getImage());
+						Log.e("savy", "发送方网络图片:" + chatMessage.getImagePath());
 						message_content.setVisibility(View.GONE);
 						chat_message_img_right.setVisibility(View.VISIBLE);
 						//测试图片
@@ -160,32 +157,33 @@ public class ChatAdapter extends BaseAdapter {
 //									}
 //								});
 					} else {// IO流文件，当前发送的图片为IO流图片
+
+						Log.e("savy", "发送方IO流图片:" + chatMessage.getImagePath());
+
 						chat_message_img_right_send.setVisibility(View.VISIBLE);
 						chat_message_img_right.setVisibility(View.GONE);
-						// 图片网址转换
-						Log.e("savvy", "发送方IO流图片:" + chatMessage.getImage());
-						//测试图片
-						chat_message_img_right.setImageResource(R.drawable.item_icon_test);
 
-						//根据编码格式，将字符串转换成图片（如base64）
-//						Bitmap imageBitmap = contextUtil
-//								.stringtoBitmap(chatMessage.getImage());
-//						chat_message_img_right_send.setImageBitmap(imageBitmap);
-//						chat_message_img_right_send
-//								.setOnClickListener(new OnClickListener() {
-//									@Override
-//									public void onClick(View v) {
-//										Log.e("savvy", "chat_message_img_right");
-//										Intent intent = new Intent();// 不能直接传递大于40k的图片和大于1M的序列化字符串
-//										Bundle bundle = new Bundle();
-//										bundle.putString("imagePath",
-//												chatMessage.getImagePath());
-//										intent.putExtras(bundle);
-//										intent.setClass(context,
-//												CommonBigImageActivity.class);
-//										context.startActivity(intent);
-//									}
-//								});
+						//测试图片
+//						chat_message_img_right.setImageResource(R.drawable.item_icon_test);
+
+//						Bitmap bitmap = commonUtil.getBitmapWithPath(chatMessage.getImagePath());
+						chat_message_img_right_send.setImageBitmap(chatMessage.getImageBitmap());
+						chat_message_img_right_send
+								.setOnClickListener(new OnClickListener() {
+									@Override
+									public void onClick(View v) {
+										Log.e("savvy", "chat_message_img_right");
+										Intent intent = new Intent();// 不能直接传递大于40k的图片和大于1M的序列化字符串
+										Bundle bundle = new Bundle();
+										bundle.putString("imagePath",
+												chatMessage.getImagePath());
+										intent.putExtras(bundle);
+										intent.setClass(context,
+												CommonBigImageActivity.class);
+										context.startActivity(intent);
+									}
+								});
+
 					}
 				} else if (chatMessage.getType().equals(
 						StaticProperty.CHATVOICE)) {// 声音
@@ -210,7 +208,7 @@ public class ChatAdapter extends BaseAdapter {
 							.setOnClickListener(new OnClickListener() {
 								@Override
 								public void onClick(View v) {
-									Log.e("savvy",
+									Log.e("savy",
 											"播放开始" + String.valueOf(voicePlay));
 									try {
 										if (chatMessage.getVoicePath() != null
@@ -332,7 +330,7 @@ public class ChatAdapter extends BaseAdapter {
 							.setOnClickListener(new OnClickListener() {
 								@Override
 								public void onClick(View v) {
-									Log.e("savvy",
+									Log.e("savy",
 											"播放开始" + String.valueOf(voicePlay));
 									try {
 										if (chatMessage.getVoicePath() != null

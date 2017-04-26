@@ -1,5 +1,7 @@
 package com.pactera.enterprisesecretary.module;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 import java.util.Map;
 
@@ -12,13 +14,13 @@ public class ChatMessage implements Serializable {
 
 	private static final long serialVersionUID = -4012977018484775771L;
 
-	private String name;// 名称
+	private String name;// 身份名称，即用户名
 	private String type;// 内容类型
 	private String message;// 信息
 	private String voice;// 声音
-	private String image;// 图片
-	private String imagePath;// 图片地址
-	private Map<String, String> order;// 订单
+	private String imageString;// 图片内容字符串
+	private Bitmap imageBitmap;// 图片内容bitmap
+	private String imagePath;// 图片地址（网址或本地地址）
 	private String systemInfo;// 系统信息
 	private boolean messageFlag;// 信息类型,true为发送，false为接收
 	private String sentTime;// 信息发送时间
@@ -51,12 +53,20 @@ public class ChatMessage implements Serializable {
 		this.voice = voice;
 	}
 
-	public String getImage() {
-		return image;
+	public Bitmap getImageBitmap() {
+		return imageBitmap;
 	}
 
-	public void setImage(String image) {
-		this.image = image;
+	public void setImageBitmap(Bitmap imageBitmap) {
+		this.imageBitmap = imageBitmap;
+	}
+
+	public String getImageString() {
+		return imageString;
+	}
+
+	public void setImageString(String imageString) {
+		this.imageString = imageString;
 	}
 
 	public boolean isMessageFlag() {
@@ -97,14 +107,6 @@ public class ChatMessage implements Serializable {
 
 	public void setVoiceTime(int voiceTime) {
 		this.voiceTime = voiceTime;
-	}
-
-	public Map<String, String> getOrder() {
-		return order;
-	}
-
-	public void setOrder(Map<String, String> order) {
-		this.order = order;
 	}
 
 	public String getLoginUserHeadImage() {

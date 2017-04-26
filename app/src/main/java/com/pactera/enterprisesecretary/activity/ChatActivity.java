@@ -1,11 +1,16 @@
 package com.pactera.enterprisesecretary.activity;
 
 import android.content.ActivityNotFoundException;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
@@ -33,17 +38,22 @@ import com.pactera.enterprisesecretary.BuildConfig;
 import com.pactera.enterprisesecretary.R;
 import com.pactera.enterprisesecretary.adapter.ChatAdapter;
 import com.pactera.enterprisesecretary.module.ChatMessage;
+import com.pactera.enterprisesecretary.util.CommonUtil;
 import com.pactera.enterprisesecretary.util.StaticProperty;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static android.R.id.message;
+
 //聊天页面
 public class ChatActivity extends MyBaseActivity implements View.OnClickListener {
 
+    public CommonUtil obtainInterfaceUtil = new CommonUtil();//通用方法
 
     private Button chatMoreButton, chatSendButton = null;
     private ImageButton chatTypeButton = null;
@@ -201,23 +211,21 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
 //                                                    String fileName = StaticProperty.FILEPATH
 //                                                            + photoName;
 //                                                    File file = new File(fileName);
-//                                                    if (!file.getParentFile().exists()) {
-//                                                        file.getParentFile().mkdirs();
-//                                                    }
+
 //
-//                                                    if (!file.getParentFile().exists())file.getParentFile().mkdirs();
-
-
-                                                    File imagePath = new File(getFilesDir(), "Videos");
-                                                    File newFile = new File(imagePath, photoName);
-
+                                                    File imagePath = new File(getFilesDir(), "Resource");
+                                                    File newFile = new File(imagePath, ChatActivity.this.photoName);
+                                                    //首次时必须创建！！！
+                                                    if (!imagePath.exists()) {
+                                                        imagePath.mkdirs();
+                                                    }
 
                                                     Uri imageUri = FileProvider.getUriForFile(ChatActivity.this,"com.wow.fileprovider", newFile);//通过FileProvider创建一个content类型的Uri
                                                     Intent intent = new Intent();
                                                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //添加这一句表示对目标应用临时授权该Uri所代表的文件
                                                     intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);//设置Action为拍照
                                                     intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);//将拍取的照片保存到指定URI
-                                                    startActivityForResult(intent,1006);
+                                                    startActivityForResult(intent,10);
 
 
 
@@ -264,4 +272,83 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
                 break;
         }
     }
+
+
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+//        Toast.makeText(
+//                ChatActivity.this,
+//                requestCode+":"+resultCode, Toast.LENGTH_LONG)
+//                .show();
+        Log.e(TAG, requestCode+"-----单聊跳转返回结果：" + resultCode);
+        boolean sendFlag = true;//发送成功
+        String photoPath = null;//图片路径
+        Bitmap photoBitmap = null;//图片数据
+        // 拍照之后回传的数据
+        if (requestCode == 10 && resultCode == RESULT_OK) {
+            File imagePath = new File(getFilesDir(), "Resource");
+            File newFile = new File(imagePath, ChatActivity.this.photoName);
+            Log.e(TAG, "图片路径为：" +  newFile.getPath());
+            photoPath = newFile.getPath();
+            photoBitmap = BitmapFactory.decodeFile(photoPath);
+            Log.e(TAG, "图片为：" +  photoBitmap);
+//            Bitmap bitmap = obtainInterfaceUtil.getBitmapByPath(photoPath, 1000,
+//                    1000);
+//            int degree = obtainInterfaceUtil
+//                    .getBitmapDegree(StaticProperty.FILEPATH + photoName);
+//            bitmap = obtainInterfaceUtil.rotateBitmapByDegree(bitmap, degree);
+//            bitmap.recycle();
+//            bitmap = null;
+//            System.gc();
+
+        } else if (requestCode == 11 && resultCode == RESULT_OK) {// 从相册中获取照片之后回传的数据
+            Uri uri = data.getData();
+            photoPath = obtainInterfaceUtil.getRealFilePathByUri(
+                    ChatActivity.this, uri);
+            Log.e(TAG, "图片路径为：" +  photoPath);
+            try {
+                photoBitmap = MediaStore.Images.Media.getBitmap(ChatActivity.this.getContentResolver(), uri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            Log.e(TAG, "图片为：" +  photoBitmap);
+//            int degree = obtainInterfaceUtil.getBitmapDegree(photoPath);
+//            bitmap = obtainInterfaceUtil.rotateBitmapByDegree(bitmap, degree);
+//            bitmap.recycle();
+//            bitmap = null;
+//            System.gc();
+        }else { //发送失败
+            sendFlag = false;
+        }
+
+        //发送成功，保存图片地址
+        if (sendFlag && !"".equals(photoPath)) {
+                try {
+                    ChatMessage chatMessage = new ChatMessage();
+                    chatMessage.setMessageFlag(true);
+                    Date sentDate = new Date();
+                    SimpleDateFormat sdf = new SimpleDateFormat(
+                            "yyyy-MM-dd HH:mm:ss");
+                    chatMessage.setSentTime(sdf.format(sentDate));
+                    chatMessage.setType(StaticProperty.CHATIMAGE);// 存入信息类型
+                    chatMessage.setImagePath(photoPath);
+                    chatMessage.setImageBitmap(photoBitmap);
+                    messageList.add(chatMessage);
+                    chatListView
+                            .setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+                    chatAdapter.notifyDataSetChanged();
+                } catch (Exception e) {
+                    Log.i(TAG, "发送异常" + e.toString());
+                    e.printStackTrace();
+                    Toast.makeText(ChatActivity.this,
+                            "发送失败，请重试！", Toast.LENGTH_SHORT).show();
+                }
+        }
+    }
+
+
+
 }

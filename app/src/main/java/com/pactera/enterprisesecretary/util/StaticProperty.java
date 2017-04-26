@@ -21,8 +21,5 @@ public class StaticProperty {
     public static final String CHATIMAGE = "image"; // 聊天内容为图片信息
     public static final String CHATVOICE = "voice"; // 聊天内容为声音信息
     // 文件存储文件夹路径
-    public static final String FILEPATH = Environment
-            .getExternalStorageDirectory().toString()
-            + File.separator
-            + "enterpriseSecretery" + File.separator;
+    public static final String FILEPATH = "Resource";//资源文件路径
 }

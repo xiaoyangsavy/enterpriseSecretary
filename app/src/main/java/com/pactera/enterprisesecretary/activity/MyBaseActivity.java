@@ -15,7 +15,7 @@ import com.pactera.enterprisesecretary.R;
 //activity公共基类
 public class MyBaseActivity extends AppCompatActivity {
 
-    protected String TAG = "SAVY";
+    protected String TAG = "savy";
 
     protected ActionBar actionBar = null;
     protected View myActionBarView = null;
