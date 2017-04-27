@@ -177,6 +177,12 @@ public class ChatAdapter extends BaseAdapter {
 										Bundle bundle = new Bundle();
 										bundle.putString("imagePath",
 												chatMessage.getImagePath());
+										bundle.putInt("type",chatMessage.getImageType());
+                                        if(chatMessage.getImageType()==1){
+                                            bundle.putParcelable("imageUri",chatMessage.getImageUri());
+                                        }
+//                                        bundle.putParcelable("imageBitmap",
+//                                                chatMessage.getImageBitmap());//直接传递bitmap有大小的限制
 										intent.putExtras(bundle);
 										intent.setClass(context,
 												CommonBigImageActivity.class);

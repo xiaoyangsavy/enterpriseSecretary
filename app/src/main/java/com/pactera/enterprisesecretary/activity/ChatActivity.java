@@ -287,27 +287,30 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
         boolean sendFlag = true;//发送成功
         String photoPath = null;//图片路径
         Bitmap photoBitmap = null;//图片数据
+        ChatMessage chatMessage = new ChatMessage();//消息发送vo类
         // 拍照之后回传的数据
         if (requestCode == 10 && resultCode == RESULT_OK) {
             File imagePath = new File(getFilesDir(), "Resource");
             File newFile = new File(imagePath, ChatActivity.this.photoName);
             Log.e(TAG, "图片路径为：" +  newFile.getPath());
             photoPath = newFile.getPath();
-            photoBitmap = BitmapFactory.decodeFile(photoPath);
+//            photoBitmap = BitmapFactory.decodeFile(photoPath);
+            photoBitmap = obtainInterfaceUtil.getBitmapByPath(photoPath, 1000,
+                    1000);
             Log.e(TAG, "图片为：" +  photoBitmap);
-//            Bitmap bitmap = obtainInterfaceUtil.getBitmapByPath(photoPath, 1000,
-//                    1000);
-//            int degree = obtainInterfaceUtil
-//                    .getBitmapDegree(StaticProperty.FILEPATH + photoName);
-//            bitmap = obtainInterfaceUtil.rotateBitmapByDegree(bitmap, degree);
+            int degree = obtainInterfaceUtil
+                    .getBitmapDegree(StaticProperty.FILEPATH + photoName);
+            photoBitmap = obtainInterfaceUtil.rotateBitmapByDegree(photoBitmap, degree);
+            chatMessage.setImageType(0);
 //            bitmap.recycle();
 //            bitmap = null;
 //            System.gc();
 
         } else if (requestCode == 11 && resultCode == RESULT_OK) {// 从相册中获取照片之后回传的数据
             Uri uri = data.getData();
+//            photoPath = uri.getEncodedPath();
             photoPath = obtainInterfaceUtil.getRealFilePathByUri(
-                    ChatActivity.this, uri);
+                    ChatActivity.this, uri);//获取后的地址无法取得图片，暂时不加入！
             Log.e(TAG, "图片路径为：" +  photoPath);
             try {
                 photoBitmap = MediaStore.Images.Media.getBitmap(ChatActivity.this.getContentResolver(), uri);
@@ -315,8 +318,10 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
                 e.printStackTrace();
             }
             Log.e(TAG, "图片为：" +  photoBitmap);
-//            int degree = obtainInterfaceUtil.getBitmapDegree(photoPath);
-//            bitmap = obtainInterfaceUtil.rotateBitmapByDegree(bitmap, degree);
+            int degree = obtainInterfaceUtil.getBitmapDegree(photoPath);
+            photoBitmap = obtainInterfaceUtil.rotateBitmapByDegree(photoBitmap, degree);
+            chatMessage.setImageType(1);
+            chatMessage.setImageUri(uri);
 //            bitmap.recycle();
 //            bitmap = null;
 //            System.gc();
@@ -327,7 +332,6 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
         //发送成功，保存图片地址
         if (sendFlag && !"".equals(photoPath)) {
                 try {
-                    ChatMessage chatMessage = new ChatMessage();
                     chatMessage.setMessageFlag(true);
                     Date sentDate = new Date();
                     SimpleDateFormat sdf = new SimpleDateFormat(

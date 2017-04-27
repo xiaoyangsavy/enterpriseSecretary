@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,6 +21,7 @@ import com.pactera.enterprisesecretary.custom.DragImageView;
 import com.pactera.enterprisesecretary.util.CommonUtil;
 import com.pactera.enterprisesecretary.util.StaticProperty;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 public class CommonBigImageActivity extends AppCompatActivity {
@@ -38,6 +41,9 @@ public class CommonBigImageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_common_big_image);
+
+        this.getSupportActionBar().hide();//隐藏顶部导航栏
+
         share = getSharedPreferences(StaticProperty.SAVEINFO,
                 Activity.MODE_PRIVATE);
         Log.d("savy", "显示大图活动");
@@ -46,16 +52,32 @@ public class CommonBigImageActivity extends AppCompatActivity {
         dragImageView.setmActivity(this);// 注入Activity.
         // 获取传入参数
         Intent intent = super.getIntent();
-
-         if (intent.getExtras().getString("imagePath") != null) {
-            imageBitmap = obtainInterfaceUtil.getBitmapByPath(intent
-                    .getExtras().getString("imagePath"), 1000, 1000);
-            int degree = obtainInterfaceUtil.getBitmapDegree(intent.getExtras()
-                    .getString("imagePath"));
-            imageBitmap = obtainInterfaceUtil.rotateBitmapByDegree(imageBitmap,
-                    degree);
-            dragImageView.setImageBitmap(imageBitmap);
+        Bundle bundle = intent.getExtras();
+        int type = bundle.getInt("type");
+        int degree = 0;
+        switch (type){//图片类型
+            case 0://拍照
+                imageBitmap = obtainInterfaceUtil.getBitmapByPath(bundle.getString("imagePath"), 1000, 1000);
+                 degree = obtainInterfaceUtil.getBitmapDegree(intent.getExtras()
+                        .getString("imagePath"));
+                imageBitmap = obtainInterfaceUtil.rotateBitmapByDegree(imageBitmap,
+                        degree);
+                dragImageView.setImageBitmap(imageBitmap);
+                break;
+            case 1://相册
+                Uri uri = bundle.getParcelable("imageUri");
+                try {
+                    imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                dragImageView.setImageBitmap(imageBitmap);
+                break;
+            case 2://网络
+                break;
         }
+
+
         /** 测量状态栏高度 **/
         viewTreeObserver = dragImageView.getViewTreeObserver();
         viewTreeObserver

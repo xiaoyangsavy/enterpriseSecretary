@@ -1,6 +1,7 @@
 package com.pactera.enterprisesecretary.module;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -21,6 +22,8 @@ public class ChatMessage implements Serializable {
 	private String imageString;// 图片内容字符串
 	private Bitmap imageBitmap;// 图片内容bitmap
 	private String imagePath;// 图片地址（网址或本地地址）
+	private Uri imageUri;// 图片资源标志
+	private int imageType;// 图片类型：0为拍照获取，1为相册获取，2为网络获取
 	private String systemInfo;// 系统信息
 	private boolean messageFlag;// 信息类型,true为发送，false为接收
 	private String sentTime;// 信息发送时间
@@ -67,6 +70,22 @@ public class ChatMessage implements Serializable {
 
 	public void setImageString(String imageString) {
 		this.imageString = imageString;
+	}
+
+	public int getImageType() {
+		return imageType;
+	}
+
+	public void setImageType(int imageType) {
+		this.imageType = imageType;
+	}
+
+	public Uri getImageUri() {
+		return imageUri;
+	}
+
+	public void setImageUri(Uri imageUri) {
+		this.imageUri = imageUri;
 	}
 
 	public boolean isMessageFlag() {
