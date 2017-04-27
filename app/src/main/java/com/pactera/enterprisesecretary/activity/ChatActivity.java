@@ -57,8 +57,8 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
 
     private Button chatMoreButton, chatSendButton = null;
     private ImageButton chatTypeButton = null;
+    private Button chatAudioButton; //语音按钮
     private EditText chatMessageEditText = null;
-    private View chatVoiceButton = null;
     private RelativeLayout chatMoreView = null;
     private ScrollView chatMoreScrollView = null;
     private ImageButton[] moreButtons = null;
@@ -68,6 +68,7 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
     public ChatAdapter chatAdapter= null;
 
     private String photoName;// 随机生成的照片名
+    private Uri imageUri;// 图片资源标记
 
 
     //位移动画
@@ -88,6 +89,11 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
         this.chatSendButton.setText("拍照");
         this.chatSendButton.setOnClickListener(this);
         this.chatMessageEditText = (EditText) super.findViewById(R.id.chatMessageEditText);
+        this.chatTypeButton = (ImageButton)super.findViewById(R.id.chatTypeButton);
+        this.chatTypeButton.setTag("0");
+        this.chatTypeButton.setOnClickListener(this);
+        this.chatAudioButton = (Button)super.findViewById(R.id.chatAudioButton);
+
         this.chatMessageEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence text, int start, int count, int after) {
@@ -148,6 +154,18 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.chatTypeButton:// 点击发送按钮
+                if("0".equals(chatTypeButton.getTag())){//当前为文本，切换到语音
+                    ChatActivity.this.chatTypeButton.setTag("1");
+                    this.chatAudioButton.setVisibility(View.VISIBLE);
+                    this.chatMessageEditText.setVisibility(View.GONE);
+                }else {//切换到文本
+                    ChatActivity.this.chatTypeButton.setTag("0");
+                    this.chatMessageEditText.setVisibility(View.VISIBLE);
+                    this.chatAudioButton.setVisibility(View.GONE);
+                }
+                break;
+
             case R.id.chatMoreButton:// 点击更多按钮
                 if (!this.chatMoreView.isShown()) {
                     this.chatMoreView.setVisibility(View.VISIBLE);
@@ -220,11 +238,11 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
                                                         imagePath.mkdirs();
                                                     }
 
-                                                    Uri imageUri = FileProvider.getUriForFile(ChatActivity.this,"com.wow.fileprovider", newFile);//通过FileProvider创建一个content类型的Uri
+                                                    ChatActivity.this.imageUri = FileProvider.getUriForFile(ChatActivity.this,"com.wow.fileprovider", newFile);//通过FileProvider创建一个content类型的Uri
                                                     Intent intent = new Intent();
                                                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //添加这一句表示对目标应用临时授权该Uri所代表的文件
                                                     intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);//设置Action为拍照
-                                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);//将拍取的照片保存到指定URI
+                                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, ChatActivity.this.imageUri);//将拍取的照片保存到指定URI
                                                     startActivityForResult(intent,10);
 
 
@@ -294,34 +312,36 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
             File newFile = new File(imagePath, ChatActivity.this.photoName);
             Log.e(TAG, "图片路径为：" +  newFile.getPath());
             photoPath = newFile.getPath();
+            chatMessage.setImageType(0);//暂时未使用！
+
 //            photoBitmap = BitmapFactory.decodeFile(photoPath);
-            photoBitmap = obtainInterfaceUtil.getBitmapByPath(photoPath, 1000,
-                    1000);
-            Log.e(TAG, "图片为：" +  photoBitmap);
-            int degree = obtainInterfaceUtil
-                    .getBitmapDegree(StaticProperty.FILEPATH + photoName);
-            photoBitmap = obtainInterfaceUtil.rotateBitmapByDegree(photoBitmap, degree);
-            chatMessage.setImageType(0);
+//            photoBitmap = obtainInterfaceUtil.getBitmapByPath(photoPath, 1000,
+//                    1000);
+//            Log.e(TAG, "图片为：" +  photoBitmap);
+//            int degree = obtainInterfaceUtil
+//                    .getBitmapDegree(StaticProperty.FILEPATH + photoName);
+//            photoBitmap = obtainInterfaceUtil.rotateBitmapByDegree(photoBitmap, degree);
 //            bitmap.recycle();
 //            bitmap = null;
 //            System.gc();
 
         } else if (requestCode == 11 && resultCode == RESULT_OK) {// 从相册中获取照片之后回传的数据
-            Uri uri = data.getData();
+            ChatActivity.this.imageUri = data.getData();
 //            photoPath = uri.getEncodedPath();
             photoPath = obtainInterfaceUtil.getRealFilePathByUri(
-                    ChatActivity.this, uri);//获取后的地址无法取得图片，暂时不加入！
+                    ChatActivity.this, ChatActivity.this.imageUri);//获取后的地址无法取得图片，暂时不加入！
             Log.e(TAG, "图片路径为：" +  photoPath);
-            try {
-                photoBitmap = MediaStore.Images.Media.getBitmap(ChatActivity.this.getContentResolver(), uri);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Log.e(TAG, "图片为：" +  photoBitmap);
-            int degree = obtainInterfaceUtil.getBitmapDegree(photoPath);
-            photoBitmap = obtainInterfaceUtil.rotateBitmapByDegree(photoBitmap, degree);
             chatMessage.setImageType(1);
-            chatMessage.setImageUri(uri);
+
+//            try {
+//                photoBitmap = MediaStore.Images.Media.getBitmap(ChatActivity.this.getContentResolver(), uri);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            Log.e(TAG, "图片为：" +  photoBitmap);
+//            int degree = obtainInterfaceUtil.getBitmapDegree(photoPath);
+//            photoBitmap = obtainInterfaceUtil.rotateBitmapByDegree(photoBitmap, degree);
+
 //            bitmap.recycle();
 //            bitmap = null;
 //            System.gc();
@@ -330,16 +350,17 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
         }
 
         //发送成功，保存图片地址
-        if (sendFlag && !"".equals(photoPath)) {
+        if (sendFlag && !"".equals(photoPath)) {//图片显示以uri为根据
                 try {
                     chatMessage.setMessageFlag(true);
+                    chatMessage.setImageUri(ChatActivity.this.imageUri);//保存图片资源编号
                     Date sentDate = new Date();
                     SimpleDateFormat sdf = new SimpleDateFormat(
                             "yyyy-MM-dd HH:mm:ss");
                     chatMessage.setSentTime(sdf.format(sentDate));
                     chatMessage.setType(StaticProperty.CHATIMAGE);// 存入信息类型
                     chatMessage.setImagePath(photoPath);
-                    chatMessage.setImageBitmap(photoBitmap);
+//                    chatMessage.setImageBitmap(photoBitmap);
                     messageList.add(chatMessage);
                     chatListView
                             .setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);

@@ -26,6 +26,7 @@ import com.pactera.enterprisesecretary.module.ChatMessage;
 import com.pactera.enterprisesecretary.util.CommonUtil;
 import com.pactera.enterprisesecretary.util.StaticProperty;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -158,7 +159,7 @@ public class ChatAdapter extends BaseAdapter {
 //								});
 					} else {// IO流文件，当前发送的图片为IO流图片
 
-						Log.e("savy", "发送方IO流图片:" + chatMessage.getImagePath());
+						Log.e("savy", "发送方IO流图片:" + chatMessage.getImageUri());
 
 						chat_message_img_right_send.setVisibility(View.VISIBLE);
 						chat_message_img_right.setVisibility(View.GONE);
@@ -167,7 +168,17 @@ public class ChatAdapter extends BaseAdapter {
 //						chat_message_img_right.setImageResource(R.drawable.item_icon_test);
 
 //						Bitmap bitmap = commonUtil.getBitmapWithPath(chatMessage.getImagePath());
-						chat_message_img_right_send.setImageBitmap(chatMessage.getImageBitmap());
+
+						Bitmap imageBitmap = null;
+						try {
+//							imageBitmap = commonUtil.getBitmapFormUri(context,chatMessage.getImageUri());//获取图片并压缩
+						 imageBitmap = commonUtil.getBitmapByPathByUri(context,chatMessage.getImageUri(),1000,1000);//获取图片并压缩
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						Log.e("savy", "图片内容:" + imageBitmap);
+						chat_message_img_right_send.setImageBitmap(imageBitmap);
+
 						chat_message_img_right_send
 								.setOnClickListener(new OnClickListener() {
 									@Override

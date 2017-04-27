@@ -74,10 +74,14 @@
                 android:src="@android:drawable/ic_menu_add"/>
 
 
-            <View
-                android:id="@+id/chatVoiceButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <Button
+                android:id="@+id/chatAudioButton"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dip"
+                android:layout_marginTop="5dip"
+                android:layout_toRightOf="@id/chatTypeButton"
+                android:layout_toLeftOf="@id/chatRightView"
                 android:text="录音"
                 android:visibility="gone" />
 

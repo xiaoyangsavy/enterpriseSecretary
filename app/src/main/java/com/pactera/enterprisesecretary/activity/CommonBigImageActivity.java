@@ -67,7 +67,8 @@ public class CommonBigImageActivity extends AppCompatActivity {
             case 1://相册
                 Uri uri = bundle.getParcelable("imageUri");
                 try {
-                    imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);
+//                    imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);//原始尺寸获取图片
+                    imageBitmap = obtainInterfaceUtil.getBitmapByPathByUri(this,uri,1000,1000);//获取图片并压缩
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
