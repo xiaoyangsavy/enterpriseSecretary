@@ -37,6 +37,7 @@ import android.widget.Toast;
 import com.pactera.enterprisesecretary.BuildConfig;
 import com.pactera.enterprisesecretary.R;
 import com.pactera.enterprisesecretary.adapter.ChatAdapter;
+import com.pactera.enterprisesecretary.custom.AudioRecorderButton;
 import com.pactera.enterprisesecretary.module.ChatMessage;
 import com.pactera.enterprisesecretary.util.CommonUtil;
 import com.pactera.enterprisesecretary.util.StaticProperty;
@@ -57,7 +58,7 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
 
     private Button chatMoreButton, chatSendButton = null;
     private ImageButton chatTypeButton = null;
-    private Button chatAudioButton; //语音按钮
+    private AudioRecorderButton chatAudioButton; //语音按钮
     private EditText chatMessageEditText = null;
     private RelativeLayout chatMoreView = null;
     private ScrollView chatMoreScrollView = null;
@@ -81,6 +82,10 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+
+        //获取权限
+        StaticProperty.verifyStoragePermissions(this);
+
         this.chatMoreView = (RelativeLayout) super.findViewById(R.id.chatMoreView);
         this.chatMoreButton = (Button) super.findViewById(R.id.chatMoreButton);
         this.chatMoreButton.setOnClickListener(this);
@@ -92,7 +97,14 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
         this.chatTypeButton = (ImageButton)super.findViewById(R.id.chatTypeButton);
         this.chatTypeButton.setTag("0");
         this.chatTypeButton.setOnClickListener(this);
-        this.chatAudioButton = (Button)super.findViewById(R.id.chatAudioButton);
+        this.chatAudioButton = (AudioRecorderButton) super.findViewById(R.id.chatAudioButton);
+        this.chatAudioButton.setFinishRecorderCallBack(new AudioRecorderButton.AudioFinishRecorderCallBack() {
+
+            //录音完成，时间seconds。文件路径filePath
+            public void onFinish(float seconds, String filePath) {
+                Log.e(TAG,seconds+":"+filePath);
+            }
+        });
 
         this.chatMessageEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -375,5 +387,23 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
     }
 
 
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+//        MediaPlayerManager.pause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        MediaPlayerManager.resume();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        MediaPlayerManager.release();
+    }
 
 }

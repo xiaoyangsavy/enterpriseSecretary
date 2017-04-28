@@ -74,7 +74,7 @@
                 android:src="@android:drawable/ic_menu_add"/>
 
 
-            <Button
+            <com.pactera.enterprisesecretary.custom.AudioRecorderButton
                 android:id="@+id/chatAudioButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -82,8 +82,12 @@
                 android:layout_marginTop="5dip"
                 android:layout_toRightOf="@id/chatTypeButton"
                 android:layout_toLeftOf="@id/chatRightView"
-                android:text="录音"
-                android:visibility="gone" />
+                android:background="@drawable/btn_recorder_normal"
+                android:gravity="center"
+                android:minHeight="0dp"
+                android:padding="5dp"
+                android:text="@string/str_recorder_normal"
+                android:textColor="#727272" />
 
 
             <EditText

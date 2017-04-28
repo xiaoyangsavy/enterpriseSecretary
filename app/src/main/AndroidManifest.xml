@@ -5,21 +5,23 @@
     android:versionCode="1"
     android:versionName="1.0.0">
 
+
     <!-- 拍照 -->
     <uses-permission android:name="android.permission.camera" />
+
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
     <!-- 访问网络 -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <!--读取外部存储-->
+    <!-- 读取外部存储 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <!--写入外部存储-->
+    <!-- 写入外部存储 -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!--在手机屏幕关闭后后台进程仍然运行-->
+    <!-- 在手机屏幕关闭后后台进程仍然运行 -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <!--访问电话状态-->
+    <!-- 访问电话状态 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!--录制声音 -->
+    <!-- 录制声音 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
@@ -49,7 +51,8 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".activity.CommonBigImageActivity"></activity>
+        <activity android:name=".activity.CommonBigImageActivity" />
     </application>
+
 
 </manifest>

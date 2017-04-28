@@ -1,6 +1,10 @@
 package com.pactera.enterprisesecretary.util;
 
+import android.Manifest;
+import android.app.Activity;
+import android.content.pm.PackageManager;
 import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 
 import java.io.File;
 
@@ -22,4 +26,31 @@ public class StaticProperty {
     public static final String CHATVOICE = "voice"; // 聊天内容为声音信息
     // 文件存储文件夹路径
     public static final String FILEPATH = "Resource";//资源文件路径
+
+
+
+
+    private static final int REQUEST_CODE = 1;//申请码
+    private static String[] PERMISSIONS_STORAGE = {//运行时权限
+            Manifest.permission.READ_EXTERNAL_STORAGE,//读存储空间
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,//取存储空间
+            Manifest.permission.RECORD_AUDIO//记录声音
+    };
+
+
+
+    public static void verifyStoragePermissions(Activity activity) {
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_CODE
+            );
+        }
+    }
+
 }
