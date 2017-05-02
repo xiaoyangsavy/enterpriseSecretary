@@ -1,29 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:layout_height="match_parent" >
 
     <RelativeLayout
         android:id="@+id/chatContentLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-       android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp"
-         >
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp" >
 
         <TextView
-            android:id="@+id/chat_message_name"
+            android:id="@+id/chatMessageName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="20dp"
-            android:text="未知"
+            android:text="Tienfffffff"
             android:textColor="#6c6c6c" />
 
         <TextView
-            android:id="@+id/chat_message_time"
+            android:id="@+id/chatMessageTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -34,7 +32,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_alignParentLeft="true"
             android:layout_marginTop="20dp"
             android:paddingBottom="10dp" >
 
@@ -42,13 +40,14 @@
                 android:id="@+id/relativeLayout1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true" >
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="10dp" >
 
                 <com.pactera.enterprisesecretary.custom.CircleImageview
-                    android:id="@+id/chat_message_icon"
+                    android:id="@+id/chatMessageIcon"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginLeft="10dp"
+                    android:scaleType="fitCenter"
                     android:src="@android:drawable/ic_menu_gallery" />
             </RelativeLayout>
 
@@ -56,11 +55,12 @@
                 android:id="@+id/relativelayout2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
                 android:layout_toRightOf="@+id/relativeLayout1" >
             </RelativeLayout>
 
             <LinearLayout
-                android:id="@+id/chat_message_layout"
+                android:id="@+id/chatMessageLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/relativelayout2"
@@ -70,43 +70,42 @@
                 android:background="@drawable/chat_left_backage"
                 android:minHeight="10dip"
                 android:orientation="horizontal"
-                android:paddingLeft="5dip" >
+                android:paddingLeft="10dip"
+                android:paddingRight="5dip" >
 
-                <ProgressBar
-                    android:id="@+id/chat_item_to_progressbar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone" />
 
                 <ImageView
-                    android:id="@+id/chat_message_img"
+                    android:id="@+id/chatImage"
                     android:layout_width="80dip"
                     android:layout_height="80dip"
                     android:layout_margin="10dip"
                     android:visibility="gone" />
 
+                <View android:id="@+id/chatAudio"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center_vertical|right"
+                    android:visibility="gone"
+                    />
+
                 <TextView
-                    android:id="@+id/chat_message_content"
+                    android:id="@+id/chatText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:text="" />
-
+                    android:visibility="gone"/>
             </LinearLayout>
 
-            
             <TextView
                 android:id="@+id/chatAudioTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/relativelayout2"
                 android:layout_marginTop="3dp"
-                android:layout_toRightOf="@+id/chat_message_layout"
-                android:text="voicetime"
+                android:layout_toRightOf="@+id/chatMessageLayout"
+                android:text="0))"
                 android:visibility="gone" />
         </RelativeLayout>
     </RelativeLayout>
-
-
 
 </RelativeLayout>
