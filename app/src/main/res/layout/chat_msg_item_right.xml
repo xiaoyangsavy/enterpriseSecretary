@@ -11,7 +11,7 @@
         android:layout_marginTop="20dp" >
 
         <TextView
-            android:id="@+id/chat_message_name"
+            android:id="@+id/chatMessageName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -21,7 +21,7 @@
             android:textColor="#6c6c6c" />
 
         <TextView
-            android:id="@+id/chat_message_time"
+            android:id="@+id/chatMessageTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -44,7 +44,7 @@
                 android:layout_marginRight="10dp" >
 
                 <com.pactera.enterprisesecretary.custom.CircleImageview
-                    android:id="@+id/chat_message_icon"
+                    android:id="@+id/chatMessageIcon"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:scaleType="fitCenter"
@@ -60,7 +60,7 @@
             </RelativeLayout>
 
             <LinearLayout
-                android:id="@+id/chat_message_layout"
+                android:id="@+id/chatMessageLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/relativelayout2"
@@ -73,11 +73,6 @@
                 android:paddingLeft="5dip"
                 android:paddingRight="10dip" >
 
-                <ProgressBar
-                    android:id="@+id/chat_item_to_progressbar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone" />
 
                 <ImageView
                     android:id="@+id/chatImage"
@@ -107,8 +102,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/relativelayout2"
                 android:layout_marginTop="3dp"
-                android:layout_toLeftOf="@+id/chat_message_layout"
-                android:text="voicetime"
+                android:layout_toLeftOf="@+id/chatMessageLayout"
+                android:text="0))"
                 android:visibility="gone" />
         </RelativeLayout>
     </RelativeLayout>

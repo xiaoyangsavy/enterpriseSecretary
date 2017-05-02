@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pactera.enterprisesecretary.R;
+import com.pactera.enterprisesecretary.activity.ChatActivity;
 import com.pactera.enterprisesecretary.activity.CommonBigImageActivity;
 import com.pactera.enterprisesecretary.custom.CircleImageview;
 import com.pactera.enterprisesecretary.module.ChatMessage;
@@ -92,23 +93,23 @@ public class ChatAdapter extends BaseAdapter {
 				.findViewById(R.id.chatImage);
 		this.chatAudio = (View) convertView
 				   .findViewById(R.id.chatAudio);
-		LinearLayout chat_message_layout = (LinearLayout) convertView
-				.findViewById(R.id.chat_message_layout);
-		TextView voicetime = (TextView) convertView
-				.findViewById(R.id.voicetime);
-		TextView message_name = (TextView) convertView
-				.findViewById(R.id.chat_message_name);
-		TextView message_time = (TextView) convertView
-				.findViewById(R.id.chat_message_time);
+		LinearLayout chatMessageLayout = (LinearLayout) convertView
+				.findViewById(R.id.chatMessageLayout);
+		TextView chatAudioTime = (TextView) convertView
+				.findViewById(R.id.chatAudioTime);
+		TextView chatMessageName = (TextView) convertView
+				.findViewById(R.id.chatMessageName);
+		TextView chatMessageTime = (TextView) convertView
+				.findViewById(R.id.chatMessageTime);
 		TextView chatText = (TextView) convertView
 				.findViewById(R.id.chatText);
 		RelativeLayout chatContentLayout = (RelativeLayout) convertView
 				.findViewById(R.id.chatContentLayout);
-		CircleImageview chat_message_icon = (CircleImageview) convertView
-				.findViewById(R.id.chat_message_icon);
+		CircleImageview chatMessageIcon = (CircleImageview) convertView
+				.findViewById(R.id.chatMessageIcon);
 
-		message_name.setText(chatMessage.getName());
-		message_time.setText(chatMessage.getSentTime());
+		chatMessageName.setText(chatMessage.getName());
+		chatMessageTime.setText(chatMessage.getSentTime());
 
 		// 判断消息类型，分别进行展示
 		Log.e("savvy", "类型:" + chatMessage.getType());
@@ -118,9 +119,7 @@ public class ChatAdapter extends BaseAdapter {
 				if (chatMessage.getType().equals(StaticProperty.CHATINFO)) {// 文本
 					chatText.setVisibility(View.VISIBLE);
 					chatText.setText(chatMessage.getMessage());
-//					chat_message_icon
-//							.setImageResource(R.drawable.loading_fuzzy_80x80);
-					
+
 				} else if (chatMessage.getType().equals(
 						StaticProperty.CHATIMAGE)) {// 图片
 
@@ -156,11 +155,6 @@ public class ChatAdapter extends BaseAdapter {
 						Log.e("savy", "发送方IO流图片:" + chatMessage.getImageUri());
 
 						chatImage.setVisibility(View.VISIBLE);
-
-						//测试图片
-//						chat_message_img_right.setImageResource(R.drawable.item_icon_test);
-
-//						Bitmap bitmap = commonUtil.getBitmapWithPath(chatMessage.getImagePath());
 
 						Bitmap imageBitmap = null;
 						try {
@@ -199,17 +193,18 @@ public class ChatAdapter extends BaseAdapter {
 						StaticProperty.CHATVOICE)) {// 声音
 					// 显示时长
 					chatAudio.setVisibility(View.VISIBLE);
-					voicetime.setVisibility(View.VISIBLE);
-					voicetime.setText(chatMessage.getVoiceTime() + "'))  ");
+					chatAudioTime.setVisibility(View.VISIBLE);
+					chatAudioTime.setText(chatMessage.getVoiceTime() + "'))  ");
 					// // 声音点击事件
 					// 默认背景
 					chatAudio
 								.setBackgroundResource(R.drawable.appkefu_chatto_voice_playing);
 					// // 声音点击事件
-					chat_message_layout
+					chatMessageLayout
 							.setOnClickListener(new OnClickListener() {
 								@Override
-								public void onClick(View v) {
+								public void onClick(View view) {
+									 final View myAudioView = view.findViewById(R.id.chatAudio);
 									Log.e("savy",
 											"播放开始" + String.valueOf(voicePlay));
 									try {
@@ -218,9 +213,9 @@ public class ChatAdapter extends BaseAdapter {
 														.equals("")) {
 											if (voicePlay) {// 成功，进行播放
 												// 播放背景
-												chatAudio
+												myAudioView
 															.setBackgroundResource(R.drawable.framebyframeright);
-												final AnimationDrawable animationDrawable = (AnimationDrawable) chatAudio
+												final AnimationDrawable animationDrawable = (AnimationDrawable) myAudioView
 														.getBackground();
 												voicePlay = false;
 												mPlayer.reset();
@@ -247,7 +242,7 @@ public class ChatAdapter extends BaseAdapter {
 														animationDrawable
 																.stop();
 														// 播放结束，改为默认背景
-														chatAudio
+														myAudioView
 																	.setBackgroundResource(R.drawable.appkefu_chatto_voice_playing);
 													}
 												});
@@ -271,7 +266,7 @@ public class ChatAdapter extends BaseAdapter {
 //					chat_message_img_left.setVisibility(View.GONE);
 					chatContentLayout.setVisibility(View.VISIBLE);
 					chatText.setText(chatMessage.getMessage());
-					chat_message_icon.setScaleType(ImageView.ScaleType.FIT_XY);
+					chatMessageIcon.setScaleType(ImageView.ScaleType.FIT_XY);
 					System.out.println("chatUserHeadImage------------------------>" + chatMessage.getChatUserHeadImage());
 				} else if (chatMessage.getType().equals(
 						StaticProperty.CHATIMAGE)) {// 图片
@@ -300,9 +295,9 @@ public class ChatAdapter extends BaseAdapter {
 					// 显示时长
 
 //					chat_message_img_left.setVisibility(View.VISIBLE);
-					voicetime.setVisibility(View.VISIBLE);
+					chatAudioTime.setVisibility(View.VISIBLE);
 
-					voicetime.setText(chatMessage.getVoiceTime() + "'))  ");
+					chatAudioTime.setText(chatMessage.getVoiceTime() + "'))  ");
 					// // 声音点击事件
 //					chat_message_img_left.setVisibility(View.VISIBLE);
 					// 默认背景
@@ -314,7 +309,7 @@ public class ChatAdapter extends BaseAdapter {
 								.setBackgroundResource(R.drawable.appkefu_chatfrom_voice_playing);
 					}
 					// // 声音点击事件`
-					chat_message_layout
+					chatMessageLayout
 							.setOnClickListener(new OnClickListener() {
 								@Override
 								public void onClick(View v) {
@@ -360,14 +355,8 @@ public class ChatAdapter extends BaseAdapter {
 														animationDrawable
 																.stop();
 														// 播放结束，改为默认背景
-														if (chatMessage
-																.isMessageFlag()) {
                                                             ChatAdapter.this.chatAudio
 																	.setBackgroundResource(R.drawable.appkefu_chatto_voice_playing);
-														} else {
-                                                            ChatAdapter.this.chatAudio
-																	.setBackgroundResource(R.drawable.appkefu_chatfrom_voice_playing);
-														}
 													}
 												});
 											}
