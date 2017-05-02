@@ -1,10 +1,12 @@
 package com.pactera.enterprisesecretary.activity;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,6 +22,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.CharacterPickerDialog;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -32,6 +35,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pactera.enterprisesecretary.BuildConfig;
@@ -42,12 +46,16 @@ import com.pactera.enterprisesecretary.module.ChatMessage;
 import com.pactera.enterprisesecretary.util.CommonUtil;
 import com.pactera.enterprisesecretary.util.StaticProperty;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.R.id.message;
 
@@ -56,7 +64,11 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
 
     public CommonUtil obtainInterfaceUtil = new CommonUtil();//通用方法
 
-    private Button chatMoreButton, chatSendButton = null;
+    SharedPreferences share = null;
+    SharedPreferences.Editor sedit = null;
+
+    private RelativeLayout chatMoreButton, chatSendButton = null;
+    private ImageView chatMoreImageView, chatSendImageView = null;
     private ImageButton chatTypeButton = null;
     private AudioRecorderButton chatAudioButton; //语音按钮
     private EditText chatMessageEditText = null;
@@ -71,6 +83,11 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
     private String photoName;// 随机生成的照片名
     private Uri imageUri;// 图片资源标记
 
+    private int screenHeight = 0;
+    private int screenWidth = 0;
+
+    private List<Map<String, Object>> itemList = null;//滚动视图扩展按钮
+
 
     //位移动画
     private Animation animationOut, animationIn;
@@ -83,16 +100,37 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        //测试数据
+        //测试数据
+        this.itemList = new ArrayList<Map<String, Object>>();
+        for (int i = 0; i < 4; i++) {
+            Map<String, Object> myMap = new HashMap<String, Object>();
+            myMap.put("name", "加载中");
+            myMap.put("description", "加载中......");
+            myMap.put("image",R.drawable.test_chat_button01);
+            this.itemList.add(myMap);
+        }
+
+
+
+        //保存全局信息
+        share = this.getSharedPreferences(
+                StaticProperty.SAVEINFO, Activity.MODE_PRIVATE);
+        screenWidth = share.getInt(StaticProperty.SCREENWIDTH,480);
+        screenHeight = share.getInt(StaticProperty.SCREENHEIGHT,800);
+
         //获取权限
         StaticProperty.verifyStoragePermissions(this);
 
         this.chatMoreView = (RelativeLayout) super.findViewById(R.id.chatMoreView);
-        this.chatMoreButton = (Button) super.findViewById(R.id.chatMoreButton);
+        this.chatMoreButton = (RelativeLayout) super.findViewById(R.id.chatMoreButton);
         this.chatMoreButton.setOnClickListener(this);
-        this.chatSendButton = (Button) super.findViewById(R.id.chatSendButton);
-        this.chatSendButton.setTag("0");//默认状态
-        this.chatSendButton.setText("拍照");
+        this.chatSendButton = (RelativeLayout) super.findViewById(R.id.chatSendButton);
+        this.chatSendButton.setTag("0");//默认发送图片
         this.chatSendButton.setOnClickListener(this);
+        this.chatMoreImageView = (ImageView) super.findViewById(R.id.chatMoreImageView);
+        this.chatSendImageView = (ImageView) super.findViewById(R.id.chatSendImageView);
+
         this.chatMessageEditText = (EditText) super.findViewById(R.id.chatMessageEditText);
         this.chatTypeButton = (ImageButton)super.findViewById(R.id.chatTypeButton);
         this.chatTypeButton.setTag("0");
@@ -103,6 +141,22 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
             //录音完成，时间seconds。文件路径filePath
             public void onFinish(float seconds, String filePath) {
                 Log.e(TAG,seconds+":"+filePath);
+
+                ChatMessage chatMessage = new ChatMessage();
+                chatMessage.setMessageFlag(true);
+                Date sentDate = new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat(
+                        "yyyy-MM-dd HH:mm:ss");
+                chatMessage.setSentTime(sdf.format(sentDate));
+                chatMessage.setType(StaticProperty.CHATVOICE);// 存入信息类型
+                chatMessage
+                        .setVoiceTime((int)seconds);//保存整秒
+                chatMessage.setVoicePath(filePath);
+                messageList.add(chatMessage);
+                //istview随item的增加而向上滚动
+                ChatActivity.this.chatListView
+                        .setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+                chatAdapter.notifyDataSetChanged();
             }
         });
 
@@ -130,10 +184,10 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
                 //edit  输入结束呈现在输入框中的信息
 //                System.out.println("输入结束后的内容为 [" + edit.toString()+" ] 即将显示在屏幕上");
                 if (edit.length() > 0&&ChatActivity.this.chatSendButton.getTag().equals("0")) {
-                    ChatActivity.this.chatSendButton.setTag("1");//待发送状态
+                    ChatActivity.this.chatSendButton.setTag("1");//发送文字
                     ChatActivity.this.changeSendButton();
                 } else if(edit.length() == 0){
-                    ChatActivity.this.chatSendButton.setTag("0");//默认状态
+                    ChatActivity.this.chatSendButton.setTag("0");//发送图片
                     ChatActivity.this.changeSendButton();
                 }
 
@@ -141,25 +195,61 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
         });
 
 
+        //聊天按钮
         this.chatListView = (ListView)super.findViewById(R.id.chatListView);
         this.messageList = new ArrayList<ChatMessage>();
         this.chatAdapter = new ChatAdapter(this, messageList);
         this.chatListView.setAdapter(this.chatAdapter);
-
         // 点击更多显示动画
         this.animationIn = AnimationUtils.loadAnimation(
                 ChatActivity.this, R.anim.activity_movein);
         this.animationOut = AnimationUtils.loadAnimation(
                 ChatActivity.this, R.anim.activity_exitout);
 
+
+        //扩展按钮,滚动视图区域
+        this.chatMoreScrollView = (ScrollView)super.findViewById(R.id.chatMoreScrollView);
+        int itemWidth = screenWidth/4;
+        int itemHeight = (int)(itemWidth*1.0);//272dx
+        RelativeLayout scrollRelativeLayout = new RelativeLayout(this);//相对布局
+
+        //每个scrollView的子视图
+        for (int i = 0; i < this.itemList.size(); i++) {
+            Map<String,Object> myMap = this.itemList.get(i);
+
+            View itemView = LayoutInflater.from(this).inflate(
+                    R.layout.scrollview_chat, null);
+            RelativeLayout.LayoutParams itemLyParam = new RelativeLayout.LayoutParams(
+                    itemWidth, itemHeight);
+            itemLyParam.leftMargin = i*itemWidth;
+            itemView.setLayoutParams(itemLyParam);
+
+            ImageView itemImageView = (ImageView)itemView.findViewById(R.id.itemChatIconImageView);
+            itemImageView.setImageResource((int)myMap.get("image"));
+
+            TextView itemTextView = (TextView)itemView.findViewById(R.id.itemChatTitleTextView);
+            itemTextView.setText( myMap.get("name").toString());
+
+            final int index = i;
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getApplicationContext(),
+                            "点击了："+(index+1) , Toast.LENGTH_LONG).show();
+                }
+            });
+            scrollRelativeLayout.addView(itemView);
+        }
+        this.chatMoreScrollView.addView(scrollRelativeLayout);
+
     }
 
     //改变发送
     public void changeSendButton() {
         if (this.chatSendButton.getTag().equals("0")) {
-            this.chatSendButton.setText("拍照");
+            this.chatSendImageView.setImageResource(R.drawable.chat_send_picture);
         } else {
-            this.chatSendButton.setText("发送");
+            this.chatSendImageView.setImageResource(R.drawable.chat_send_text);
         }
     }
 
@@ -169,10 +259,12 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
             case R.id.chatTypeButton:// 点击发送按钮
                 if("0".equals(chatTypeButton.getTag())){//当前为文本，切换到语音
                     ChatActivity.this.chatTypeButton.setTag("1");
+                    ChatActivity.this.chatTypeButton.setImageResource(R.drawable.chat_keyboard);
                     this.chatAudioButton.setVisibility(View.VISIBLE);
                     this.chatMessageEditText.setVisibility(View.GONE);
                 }else {//切换到文本
                     ChatActivity.this.chatTypeButton.setTag("0");
+                    ChatActivity.this.chatTypeButton.setImageResource(R.drawable.chat_audio);
                     this.chatMessageEditText.setVisibility(View.VISIBLE);
                     this.chatAudioButton.setVisibility(View.GONE);
                 }
@@ -188,7 +280,9 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
                 }
                 break;
             case R.id.chatSendButton:// 点击发送按钮
+                Log.e(TAG,"点击了发送按钮!!!!");
                 if(view.getTag().equals("1")){//发送文本
+                    Log.e(TAG,"发送文本!!!!");
                     String message = this.chatMessageEditText.getText().toString();
                     if (message == null || message.equals("")) {
                         Toast.makeText(ChatActivity.this, "内容不能为空",
@@ -298,6 +392,7 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
 
                 }
                 break;
+
             default:
                 break;
         }

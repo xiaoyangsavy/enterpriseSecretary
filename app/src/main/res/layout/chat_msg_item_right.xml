@@ -80,28 +80,29 @@
                     android:visibility="gone" />
 
                 <ImageView
-                    android:id="@+id/chat_message_img"
+                    android:id="@+id/chatImage"
                     android:layout_width="80dip"
                     android:layout_height="80dip"
                     android:layout_margin="10dip"
                     android:visibility="gone" />
 
-                <ImageView
-                    android:id="@+id/chat_message_img_right_send"
-                    android:layout_width="80dip"
-                    android:layout_height="80dip"
-                    android:layout_margin="10dip"
-                    android:visibility="gone" />
+                <View android:id="@+id/chatAudio"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center_vertical|right"
+                    android:visibility="gone"
+                    />
 
                 <TextView
-                    android:id="@+id/chat_message_content"
+                    android:id="@+id/chatText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="8dp" />
+                    android:layout_margin="8dp"
+                    android:visibility="gone"/>
             </LinearLayout>
 
             <TextView
-                android:id="@+id/voicetime"
+                android:id="@+id/chatAudioTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/relativelayout2"

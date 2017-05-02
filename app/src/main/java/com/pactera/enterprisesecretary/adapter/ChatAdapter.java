@@ -44,8 +44,10 @@ public class ChatAdapter extends BaseAdapter {
 	private List<ChatMessage> chatMessageList;
 	private boolean voicePlay = true;// 音频是否可以播放
 	MediaPlayer mPlayer = null;
-	private ImageView chat_message_img_right_send;
-	private ImageView chat_message_img_left, chat_message_img_right;
+
+	private  ImageView chatImage;
+	private  View chatAudio ;
+
 
 	public ChatAdapter(Activity context, List<ChatMessage> chatMessageList) {
 		super();
@@ -79,17 +81,17 @@ public class ChatAdapter extends BaseAdapter {
 		if (chatMessage.isMessageFlag()) {// 发送方信息
 			convertView = ChatAdapter.this.context.getLayoutInflater().inflate(
 					R.layout.chat_msg_item_right, null);
-			chat_message_img_right = (ImageView) convertView
-					.findViewById(R.id.chat_message_img);
-			chat_message_img_right_send = (ImageView) convertView
-					.findViewById(R.id.chat_message_img_right_send);
+
+
 		} else {// 接收方信息
 			convertView = ChatAdapter.this.context.getLayoutInflater().inflate(
 					R.layout.chat_msg_item_left, null);
-			chat_message_img_left = (ImageView) convertView
-					.findViewById(R.id.chat_message_img);
 		}
 
+		this.chatImage = (ImageView) convertView
+				.findViewById(R.id.chatImage);
+		this.chatAudio = (View) convertView
+				   .findViewById(R.id.chatAudio);
 		LinearLayout chat_message_layout = (LinearLayout) convertView
 				.findViewById(R.id.chat_message_layout);
 		TextView voicetime = (TextView) convertView
@@ -98,8 +100,8 @@ public class ChatAdapter extends BaseAdapter {
 				.findViewById(R.id.chat_message_name);
 		TextView message_time = (TextView) convertView
 				.findViewById(R.id.chat_message_time);
-		TextView message_content = (TextView) convertView
-				.findViewById(R.id.chat_message_content);
+		TextView chatText = (TextView) convertView
+				.findViewById(R.id.chatText);
 		RelativeLayout chatContentLayout = (RelativeLayout) convertView
 				.findViewById(R.id.chatContentLayout);
 		CircleImageview chat_message_icon = (CircleImageview) convertView
@@ -114,16 +116,13 @@ public class ChatAdapter extends BaseAdapter {
 			if (chatMessage.isMessageFlag()) {
 				// 右边，发送方
 				if (chatMessage.getType().equals(StaticProperty.CHATINFO)) {// 文本
-					message_content.setVisibility(View.VISIBLE);
-					chat_message_img_right.setVisibility(View.GONE);
-					chat_message_img_right_send.setVisibility(View.GONE);
-					message_content.setText(chatMessage.getMessage());
+					chatText.setVisibility(View.VISIBLE);
+					chatText.setText(chatMessage.getMessage());
 //					chat_message_icon
 //							.setImageResource(R.drawable.loading_fuzzy_80x80);
 					
 				} else if (chatMessage.getType().equals(
 						StaticProperty.CHATIMAGE)) {// 图片
-					message_content.setVisibility(View.GONE);
 
 					Pattern pattern = Pattern.compile("(http://){1}");
 					// 空格结束
@@ -132,20 +131,15 @@ public class ChatAdapter extends BaseAdapter {
 						 matcher = pattern.matcher(chatMessage.getImagePath());
 					}
 					if (matcher.find()) {// 网络图片,从历史记录中获取的图片为网络图片
-						chat_message_img_right.setVisibility(View.VISIBLE);
-						chat_message_img_right_send.setVisibility(View.GONE);
+						chatImage.setVisibility(View.VISIBLE);
 						// 图片网址转换
 						Log.e("savy", "发送方网络图片:" + chatMessage.getImagePath());
-						message_content.setVisibility(View.GONE);
-						chat_message_img_right.setVisibility(View.VISIBLE);
-						//测试图片
-						 chat_message_img_right.setImageResource(R.drawable.item_icon_test);
 						//点击小图显示大图
-//						chat_message_img_right
+//						chatImageRightv
 //								.setOnClickListener(new OnClickListener() {
 //									@Override
 //									public void onClick(View v) {
-//										Log.e("savvy", "chat_message_img_right");
+//										Log.e("savvy", "chatImageRight");
 //										Intent intent = new Intent();
 //										Bundle bundle = new Bundle();
 //										bundle.putString("imageUrl",
@@ -161,8 +155,7 @@ public class ChatAdapter extends BaseAdapter {
 
 						Log.e("savy", "发送方IO流图片:" + chatMessage.getImageUri());
 
-						chat_message_img_right_send.setVisibility(View.VISIBLE);
-						chat_message_img_right.setVisibility(View.GONE);
+						chatImage.setVisibility(View.VISIBLE);
 
 						//测试图片
 //						chat_message_img_right.setImageResource(R.drawable.item_icon_test);
@@ -177,9 +170,9 @@ public class ChatAdapter extends BaseAdapter {
 							e.printStackTrace();
 						}
 						Log.e("savy", "图片内容:" + imageBitmap);
-						chat_message_img_right_send.setImageBitmap(imageBitmap);
+						chatImage.setImageBitmap(imageBitmap);
 
-						chat_message_img_right_send
+						chatImage
 								.setOnClickListener(new OnClickListener() {
 									@Override
 									public void onClick(View v) {
@@ -205,21 +198,13 @@ public class ChatAdapter extends BaseAdapter {
 				} else if (chatMessage.getType().equals(
 						StaticProperty.CHATVOICE)) {// 声音
 					// 显示时长
-					message_content.setVisibility(View.GONE);
-					chat_message_img_right_send.setVisibility(View.VISIBLE);
+					chatAudio.setVisibility(View.VISIBLE);
 					voicetime.setVisibility(View.VISIBLE);
 					voicetime.setText(chatMessage.getVoiceTime() + "'))  ");
 					// // 声音点击事件
-					message_content.setVisibility(View.GONE);
-					chat_message_img_right.setVisibility(View.VISIBLE);
 					// 默认背景
-					if (chatMessage.isMessageFlag()) {
-						chat_message_img_right_send
+					chatAudio
 								.setBackgroundResource(R.drawable.appkefu_chatto_voice_playing);
-					} else {
-						chat_message_img_right_send
-								.setBackgroundResource(R.drawable.appkefu_chatfrom_voice_playing);
-					}
 					// // 声音点击事件
 					chat_message_layout
 							.setOnClickListener(new OnClickListener() {
@@ -233,14 +218,9 @@ public class ChatAdapter extends BaseAdapter {
 														.equals("")) {
 											if (voicePlay) {// 成功，进行播放
 												// 播放背景
-												if (chatMessage.isMessageFlag()) {
-													chat_message_img_right_send
+												chatAudio
 															.setBackgroundResource(R.drawable.framebyframeright);
-												} else {
-													chat_message_img_right_send
-															.setBackgroundResource(R.drawable.framebyframeleft);
-												}
-												final AnimationDrawable animationDrawable = (AnimationDrawable) chat_message_img_right_send
+												final AnimationDrawable animationDrawable = (AnimationDrawable) chatAudio
 														.getBackground();
 												voicePlay = false;
 												mPlayer.reset();
@@ -267,14 +247,8 @@ public class ChatAdapter extends BaseAdapter {
 														animationDrawable
 																.stop();
 														// 播放结束，改为默认背景
-														if (chatMessage
-																.isMessageFlag()) {
-															chat_message_img_right_send
+														chatAudio
 																	.setBackgroundResource(R.drawable.appkefu_chatto_voice_playing);
-														} else {
-															chat_message_img_right_send
-																	.setBackgroundResource(R.drawable.appkefu_chatfrom_voice_playing);
-														}
 													}
 												});
 											}
@@ -293,18 +267,17 @@ public class ChatAdapter extends BaseAdapter {
 			} else {// 左侧，接收方
 
 				if (chatMessage.getType().equals(StaticProperty.CHATINFO)) {// 文本
-					message_content.setVisibility(View.VISIBLE);
-					chat_message_img_left.setVisibility(View.GONE);
+					chatText.setVisibility(View.VISIBLE);
+//					chat_message_img_left.setVisibility(View.GONE);
 					chatContentLayout.setVisibility(View.VISIBLE);
-					message_content.setText(chatMessage.getMessage());
+					chatText.setText(chatMessage.getMessage());
 					chat_message_icon.setScaleType(ImageView.ScaleType.FIT_XY);
 					System.out.println("chatUserHeadImage------------------------>" + chatMessage.getChatUserHeadImage());
 				} else if (chatMessage.getType().equals(
 						StaticProperty.CHATIMAGE)) {// 图片
-					message_content.setVisibility(View.GONE);
-
-					chat_message_icon.setScaleType(ImageView.ScaleType.FIT_XY);
-					chat_message_img_left.setVisibility(View.VISIBLE);
+					chatImage.setVisibility(View.VISIBLE);
+					chatImage.setScaleType(ImageView.ScaleType.FIT_XY);
+//					chat_message_img_left.setVisibility(View.VISIBLE);
 					//大图显示
 //					chat_message_img_left
 //							.setOnClickListener(new OnClickListener() {
@@ -326,23 +299,21 @@ public class ChatAdapter extends BaseAdapter {
 						StaticProperty.CHATVOICE)) {// 声音
 					// 显示时长
 
-					message_content.setVisibility(View.GONE);
-					chat_message_img_left.setVisibility(View.VISIBLE);
+//					chat_message_img_left.setVisibility(View.VISIBLE);
 					voicetime.setVisibility(View.VISIBLE);
 
 					voicetime.setText(chatMessage.getVoiceTime() + "'))  ");
 					// // 声音点击事件
-					message_content.setVisibility(View.GONE);
-					chat_message_img_left.setVisibility(View.VISIBLE);
+//					chat_message_img_left.setVisibility(View.VISIBLE);
 					// 默认背景
 					if (chatMessage.isMessageFlag()) {
-						chat_message_img_left
+                        this.chatAudio
 								.setBackgroundResource(R.drawable.appkefu_chatto_voice_playing);
 					} else {
-						chat_message_img_left
+                        this.chatAudio
 								.setBackgroundResource(R.drawable.appkefu_chatfrom_voice_playing);
 					}
-					// // 声音点击事件
+					// // 声音点击事件`
 					chat_message_layout
 							.setOnClickListener(new OnClickListener() {
 								@Override
@@ -356,13 +327,13 @@ public class ChatAdapter extends BaseAdapter {
 											if (voicePlay) {// 成功，进行播放
 												// 播放背景
 												if (chatMessage.isMessageFlag()) {
-													chat_message_img_left
+                                                    ChatAdapter.this.chatAudio
 															.setBackgroundResource(R.drawable.framebyframeright);
 												} else {
-													chat_message_img_left
+                                                    ChatAdapter.this.chatAudio
 															.setBackgroundResource(R.drawable.framebyframeleft);
 												}
-												final AnimationDrawable animationDrawable = (AnimationDrawable) chat_message_img_left
+												final AnimationDrawable animationDrawable = (AnimationDrawable) ChatAdapter.this.chatAudio
 														.getBackground();
 												voicePlay = false;
 												mPlayer.reset();
@@ -391,10 +362,10 @@ public class ChatAdapter extends BaseAdapter {
 														// 播放结束，改为默认背景
 														if (chatMessage
 																.isMessageFlag()) {
-															chat_message_img_left
+                                                            ChatAdapter.this.chatAudio
 																	.setBackgroundResource(R.drawable.appkefu_chatto_voice_playing);
 														} else {
-															chat_message_img_left
+                                                            ChatAdapter.this.chatAudio
 																	.setBackgroundResource(R.drawable.appkefu_chatfrom_voice_playing);
 														}
 													}
@@ -414,7 +385,8 @@ public class ChatAdapter extends BaseAdapter {
 				}
 			}
 		} else {
-			message_content.setText("未知信息！");
+			chatText.setVisibility(View.VISIBLE);
+			chatText.setText("未知信息！");
 		}
 
 		return convertView;

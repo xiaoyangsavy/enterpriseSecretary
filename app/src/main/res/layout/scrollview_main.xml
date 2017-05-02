@@ -6,40 +6,42 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="78.7dp">
-<ImageView
-    android:id="@+id/itemMainIconImageView"
-    android:layout_width="40dp"
-    android:layout_height="40dp"
-    android:layout_marginLeft="9dp"
-    android:layout_marginTop="13dp"
-    android:layout_alignParentLeft="true"
-    android:scaleType="fitCenter"
-    android:src="@android:drawable/ic_menu_gallery"/>
 
-<TextView
-    android:id="@+id/itemMainTitleTextView"
-    android:layout_width="match_parent"
-    android:layout_height="20dp"
-    android:layout_toRightOf="@id/itemMainIconImageView"
-    android:layout_alignTop="@id/itemMainIconImageView"
-    android:layout_marginTop="2dp"
-    android:layout_marginLeft="16dp"
-    android:textColor="@color/colorBlack"
-    android:textSize="@dimen/font_size_title"
-    android:text="加载中"
-    android:gravity="left|center_vertical"/>
+        <ImageView
+            android:id="@+id/itemMainIconImageView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="9dp"
+            android:layout_marginTop="13dp"
+            android:scaleType="fitCenter"
+            android:src="@android:drawable/ic_menu_gallery" />
 
-    <TextView
-        android:id="@+id/itemMainDescriptionTextView"
-        android:layout_width="match_parent"
-        android:layout_height="15dp"
-        android:layout_alignBottom="@id/itemMainIconImageView"
-        android:layout_toRightOf="@id/itemMainIconImageView"
-        android:layout_marginBottom="2dp"
-        android:layout_marginLeft="16dp"
-        android:textColor="@color/colorGray"
-        android:textSize="@dimen/font_size_description"
-        android:text="加载中......"
-        android:gravity="center_vertical"/>
+        <TextView
+            android:id="@+id/itemMainTitleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_alignTop="@id/itemMainIconImageView"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="2dp"
+            android:layout_toRightOf="@id/itemMainIconImageView"
+            android:gravity="left|center_vertical"
+            android:text="加载中"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/font_size_title" />
 
-</RelativeLayout></RelativeLayout>
+        <TextView
+            android:id="@+id/itemMainDescriptionTextView"
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            android:layout_alignBottom="@id/itemMainIconImageView"
+            android:layout_marginBottom="2dp"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@id/itemMainIconImageView"
+            android:gravity="center_vertical"
+            android:text="加载中......"
+            android:textColor="@color/colorGray"
+            android:textSize="@dimen/font_size_description" />
+
+    </RelativeLayout>
+</RelativeLayout>

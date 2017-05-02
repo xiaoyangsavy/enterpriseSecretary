@@ -1,0 +1,32 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainScrollItemLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="91dp">
+
+        <ImageView
+            android:id="@+id/itemChatIconImageView"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="13.3dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/test_chat_button01" />
+
+        <TextView
+            android:id="@+id/itemChatTitleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            android:layout_below="@id/itemChatIconImageView"
+            android:layout_marginTop="10dp"
+            android:gravity="center"
+            android:text="加载中"
+            android:textColor="#666666"
+            android:textSize="@dimen/font_size_description" />
+
+
+    </RelativeLayout>
+</RelativeLayout>
