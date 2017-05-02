@@ -23,9 +23,11 @@ import android.text.TextWatcher;
 import android.text.method.CharacterPickerDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -80,11 +82,14 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
     private List<ChatMessage> messageList = null;
     public ChatAdapter chatAdapter= null;
 
+    private InputMethodManager inputMethodManager = null;//键盘管理器
+
     private String photoName;// 随机生成的照片名
     private Uri imageUri;// 图片资源标记
 
     private int screenHeight = 0;
     private int screenWidth = 0;
+
 
     private List<Map<String, Object>> itemList = null;//滚动视图扩展按钮
 
@@ -110,7 +115,6 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
             myMap.put("image",R.drawable.test_chat_button01);
             this.itemList.add(myMap);
         }
-
 
 
         //保存全局信息
@@ -205,6 +209,22 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
                 ChatActivity.this, R.anim.activity_movein);
         this.animationOut = AnimationUtils.loadAnimation(
                 ChatActivity.this, R.anim.activity_exitout);
+
+        //触摸屏幕隐藏键盘
+       this.inputMethodManager = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+        this.chatListView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
+                    if(getCurrentFocus()!=null && getCurrentFocus().getWindowToken()!=null){
+
+                        ChatActivity.this.inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                    }
+                }
+                return false;
+            }
+        });
+
 
 
         //扩展按钮,滚动视图区域
