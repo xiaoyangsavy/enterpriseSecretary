@@ -105,6 +105,8 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        super.hiddenGoButton();
+
         //测试数据
         //测试数据
         this.itemList = new ArrayList<Map<String, Object>>();
@@ -147,12 +149,12 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
                 Log.e(TAG,seconds+":"+filePath);
 
                 ChatMessage chatMessage = new ChatMessage();
-                chatMessage.setMessageFlag(true);
+                chatMessage.setMessageFlag(1);
                 Date sentDate = new Date();
                 SimpleDateFormat sdf = new SimpleDateFormat(
                         "yyyy-MM-dd HH:mm:ss");
                 chatMessage.setSentTime(sdf.format(sentDate));
-                chatMessage.setType(StaticProperty.CHATVOICE);// 存入信息类型
+                chatMessage.setContentType(StaticProperty.CHATVOICE);// 存入信息类型
                 chatMessage
                         .setVoiceTime((int)seconds);//保存整秒
                 chatMessage.setVoicePath(filePath);
@@ -310,13 +312,13 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
                     } else {
                         Log.i(TAG, "msg" + message);
                         ChatMessage chatMessage = new ChatMessage();
-                        chatMessage.setMessageFlag(true);
+                        chatMessage.setMessageFlag(1);
                         Date sentDate = new Date();
                         SimpleDateFormat sdf = new SimpleDateFormat(
                                 "yyyy-MM-dd HH:mm:ss");
                         chatMessage.setSentTime(sdf.format(sentDate));
-                        chatMessage.setType(StaticProperty.CHATINFO);// 存入信息类型
-                        chatMessage.setMessage(message);
+                        chatMessage.setContentType(StaticProperty.CHATINFO);// 存入信息类型
+                        chatMessage.setTextContent(message);
                         messageList.add(chatMessage);
                         //istview随item的增加而向上滚动
                         this.chatListView
@@ -479,13 +481,13 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
         //发送成功，保存图片地址
         if (sendFlag && !"".equals(photoPath)) {//图片显示以uri为根据
                 try {
-                    chatMessage.setMessageFlag(true);
+                    chatMessage.setMessageFlag(1);
                     chatMessage.setImageUri(ChatActivity.this.imageUri);//保存图片资源编号
                     Date sentDate = new Date();
                     SimpleDateFormat sdf = new SimpleDateFormat(
                             "yyyy-MM-dd HH:mm:ss");
                     chatMessage.setSentTime(sdf.format(sentDate));
-                    chatMessage.setType(StaticProperty.CHATIMAGE);// 存入信息类型
+                    chatMessage.setContentType(StaticProperty.CHATIMAGE);// 存入信息类型
                     chatMessage.setImagePath(photoPath);
 //                    chatMessage.setImageBitmap(photoBitmap);
                     messageList.add(chatMessage);

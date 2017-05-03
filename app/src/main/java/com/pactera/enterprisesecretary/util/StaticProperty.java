@@ -21,11 +21,16 @@ public class StaticProperty {
     public static final String ISFIRSTLOGIN = "isFirstLogin"; //首次登陆
     public static final String BRAND = "phoneBrand";//手机品牌
 
-    public static final String CHATINFO = "chat"; // 聊天内容为文本信息
-    public static final String CHATIMAGE = "image"; // 聊天内容为图片信息
-    public static final String CHATVOICE = "voice"; // 聊天内容为声音信息
+    public static final int CHATINFO = 1; // 聊天内容为文本信息
+    public static final int CHATVOICE = 2; // 聊天内容为声音信息
+    public static final int CHATIMAGE = 3; // 聊天内容为图片信息
+
     // 文件存储文件夹路径
     public static final String FILEPATH = "Resource";//资源文件路径
+
+    public static final int DATABASERVERSION = 1; // 版本号
+    public static final String DATABASENAME = "savy.db";// 数据库名称
+    public static final String TABLECHATMESSAGE = "chatMessage";// 案例数据表名称
 
 
 

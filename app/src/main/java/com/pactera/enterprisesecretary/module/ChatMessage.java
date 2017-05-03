@@ -16,8 +16,9 @@ public class ChatMessage implements Serializable {
 	private static final long serialVersionUID = -4012977018484775771L;
 
 	private String name;// 身份名称，即用户名
-	private String type;// 内容类型
-	private String message;// 信息
+	private int messageFlag;// 信息类型,1为发送，0为接收
+	private int contentType;// 内容类型
+	private String textContent;// 信息
 	private String voice;// 声音
 	private String imageString;// 图片内容字符串
 	private Bitmap imageBitmap;// 图片内容bitmap
@@ -25,7 +26,6 @@ public class ChatMessage implements Serializable {
 	private Uri imageUri;// 图片资源标志
 	private int imageType;// 图片类型：0为拍照获取，1为相册获取，2为网络获取
 	private String systemInfo;// 系统信息
-	private boolean messageFlag;// 信息类型,true为发送，false为接收
 	private String sentTime;// 信息发送时间
 	private String voicePath;// 声音文件路径
 	private int voiceTime;// 音频时间
@@ -40,12 +40,12 @@ public class ChatMessage implements Serializable {
 		this.name = name;
 	}
 
-	public String getMessage() {
-		return message;
+	public String getTextContent() {
+		return textContent;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public void setTextContent(String textContent) {
+		this.textContent = textContent;
 	}
 
 	public String getVoice() {
@@ -88,20 +88,20 @@ public class ChatMessage implements Serializable {
 		this.imageUri = imageUri;
 	}
 
-	public boolean isMessageFlag() {
+	public int getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(int contentType) {
+		this.contentType = contentType;
+	}
+
+	public int getMessageFlag() {
 		return messageFlag;
 	}
 
-	public void setMessageFlag(boolean messageFlag) {
+	public void setMessageFlag(int messageFlag) {
 		this.messageFlag = messageFlag;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
 	}
 
 	public String getSentTime() {
