@@ -65,14 +65,21 @@ public class CommonBigImageActivity extends AppCompatActivity {
                 dragImageView.setImageBitmap(imageBitmap);
                 break;
             case 1://相册
-                Uri uri = bundle.getParcelable("imageUri");
-                try {
-//                    imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), uri);//原始尺寸获取图片
-                    imageBitmap = obtainInterfaceUtil.getBitmapByPathByUri(this,uri,1000,1000);//获取图片并压缩
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                imageBitmap = obtainInterfaceUtil.getBitmapByPath(bundle.getString("imagePath"), 1000, 1000);
+                degree = obtainInterfaceUtil.getBitmapDegree(intent.getExtras()
+                        .getString("imagePath"));
+                imageBitmap = obtainInterfaceUtil.rotateBitmapByDegree(imageBitmap,
+                        degree);
                 dragImageView.setImageBitmap(imageBitmap);
+
+//根据uri获取图片，已废弃！！！
+//                Uri uri = bundle.getParcelable("imageUri");
+//                try {
+//                    imageBitmap = obtainInterfaceUtil.getBitmapByPathByUri(this,uri,1000,1000);//获取图片并压缩
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//                dragImageView.setImageBitmap(imageBitmap);
                 break;
             case 2://网络
                 break;

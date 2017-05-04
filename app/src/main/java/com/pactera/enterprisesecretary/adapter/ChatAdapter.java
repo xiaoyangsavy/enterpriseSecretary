@@ -157,8 +157,8 @@ public class ChatAdapter extends BaseAdapter {
 
 						Bitmap imageBitmap = null;
 						try {
-//							imageBitmap = commonUtil.getBitmapFormUri(context,chatMessage.getImageUri());//获取图片并压缩
-						 imageBitmap = commonUtil.getBitmapByPathByUri(context,chatMessage.getImageUri(),1000,1000);//获取图片并压缩
+							imageBitmap = commonUtil.getBitmapFormUri(context,chatMessage.getImageUri());//获取图片并压缩
+//						 imageBitmap = commonUtil.getBitmapByPathByUri(context,chatMessage.getImageUri(),1000,1000);//获取图片并压缩
 						} catch (IOException e) {
 							e.printStackTrace();
 						}

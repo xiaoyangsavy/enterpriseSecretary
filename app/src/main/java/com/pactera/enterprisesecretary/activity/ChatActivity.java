@@ -85,7 +85,7 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
     private InputMethodManager inputMethodManager = null;//键盘管理器
 
     private String photoName;// 随机生成的照片名
-    private Uri imageUri;// 图片资源标记
+    private Uri imageUri;// 图片资源标记，拍照时返回，根据uri获取图片路径
 
     private int screenHeight = 0;
     private int screenWidth = 0;
@@ -354,10 +354,6 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
                                                     ChatActivity.this.photoName = "coolatin_"
                                                             + System.currentTimeMillis()
                                                             + ".jpg";
-//                                                    String fileName = StaticProperty.FILEPATH
-//                                                            + photoName;
-//                                                    File file = new File(fileName);
-
 //
                                                     File imagePath = new File(getFilesDir(), "Resource");
                                                     File newFile = new File(imagePath, ChatActivity.this.photoName);
@@ -433,7 +429,6 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
         Log.e(TAG, requestCode+"-----单聊跳转返回结果：" + resultCode);
         boolean sendFlag = true;//发送成功
         String photoPath = null;//图片路径
-        Bitmap photoBitmap = null;//图片数据
         ChatMessage chatMessage = new ChatMessage();//消息发送vo类
         // 拍照之后回传的数据
         if (requestCode == 10 && resultCode == RESULT_OK) {
@@ -456,24 +451,11 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
 
         } else if (requestCode == 11 && resultCode == RESULT_OK) {// 从相册中获取照片之后回传的数据
             ChatActivity.this.imageUri = data.getData();
-//            photoPath = uri.getEncodedPath();
             photoPath = obtainInterfaceUtil.getRealFilePathByUri(
-                    ChatActivity.this, ChatActivity.this.imageUri);//获取后的地址无法取得图片，暂时不加入！
+                    ChatActivity.this, ChatActivity.this.imageUri);//必须加入运行时权限，才可以根据路径获取图片！
             Log.e(TAG, "图片路径为：" +  photoPath);
             chatMessage.setImageType(1);
 
-//            try {
-//                photoBitmap = MediaStore.Images.Media.getBitmap(ChatActivity.this.getContentResolver(), uri);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            Log.e(TAG, "图片为：" +  photoBitmap);
-//            int degree = obtainInterfaceUtil.getBitmapDegree(photoPath);
-//            photoBitmap = obtainInterfaceUtil.rotateBitmapByDegree(photoBitmap, degree);
-
-//            bitmap.recycle();
-//            bitmap = null;
-//            System.gc();
         }else { //发送失败
             sendFlag = false;
         }
@@ -482,14 +464,13 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
         if (sendFlag && !"".equals(photoPath)) {//图片显示以uri为根据
                 try {
                     chatMessage.setMessageFlag(1);
-                    chatMessage.setImageUri(ChatActivity.this.imageUri);//保存图片资源编号
+//                    chatMessage.setImageUri(ChatActivity.this.imageUri);//保存图片资源编号
                     Date sentDate = new Date();
                     SimpleDateFormat sdf = new SimpleDateFormat(
                             "yyyy-MM-dd HH:mm:ss");
                     chatMessage.setSentTime(sdf.format(sentDate));
                     chatMessage.setContentType(StaticProperty.CHATIMAGE);// 存入信息类型
                     chatMessage.setImagePath(photoPath);
-//                    chatMessage.setImageBitmap(photoBitmap);
                     messageList.add(chatMessage);
                     chatListView
                             .setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
