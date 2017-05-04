@@ -23,14 +23,15 @@ public class MyDatabaseUtil  {
 		this.db = db;
 	}
 
-	// 关闭数据库
-	public void closeDB() {
+	// 关闭数据库，在外部统一关闭
+	public void closeDatabase() {
 		this.db.close();
 	}
 
 
 
-	public void insertAttitudeDesign(ChatMessage chatMessage) {
+
+	public void insertMessage(ChatMessage chatMessage) {
 //		System.out.println(attitude + "attitude**********");
 		String sql = "INSERT INTO "
 				+ StaticProperty.TABLECHATMESSAGE
@@ -38,15 +39,15 @@ public class MyDatabaseUtil  {
 				+ " ) "
 				+ "VALUES (?,?,?,?,?,?,?,?)";
 		Object args[] = new Object[] { chatMessage.getMessageFlag(), chatMessage.getContentType(),
-				chatMessage.getName(), chatMessage.getTextContent(),
+				chatMessage.getName()!=""?chatMessage.getName():"a", chatMessage.getTextContent(),
 				chatMessage.getVoicePath(), chatMessage.getVoiceTime(),
 				chatMessage.getImagePath(), chatMessage.getSentTime() };
 		this.db.execSQL(sql, args);
 	}
 
-	public List<ChatMessage> findAllAttitudeDesign() {
+	public List<ChatMessage> findAllMessage() {
 		List<ChatMessage> all = new ArrayList<ChatMessage>();
-		String sql = "messageFlag,contentType,name,textContent,voicePath,voiceTime,imagePath,messageTime"
+		String sql = "SELECT messageFlag,contentType,name,textContent,voicePath,voiceTime,imagePath,messageTime"
 				+ " FROM "
 				+ StaticProperty.TABLECHATMESSAGE;
 		String args[] = new String[] {};

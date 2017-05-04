@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -46,6 +47,8 @@ import com.pactera.enterprisesecretary.adapter.ChatAdapter;
 import com.pactera.enterprisesecretary.custom.AudioRecorderButton;
 import com.pactera.enterprisesecretary.module.ChatMessage;
 import com.pactera.enterprisesecretary.util.CommonUtil;
+import com.pactera.enterprisesecretary.util.MyDatabaseHelper;
+import com.pactera.enterprisesecretary.util.MyDatabaseUtil;
 import com.pactera.enterprisesecretary.util.StaticProperty;
 
 import org.w3c.dom.Text;
@@ -66,8 +69,13 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
 
     public CommonUtil obtainInterfaceUtil = new CommonUtil();//通用方法
 
+    //持久化信息
     SharedPreferences share = null;
     SharedPreferences.Editor sedit = null;
+
+    //数据库
+    private SQLiteOpenHelper sqLiteOpenHelper = null;
+    private MyDatabaseUtil myDatabaseUtil = null;
 
     private RelativeLayout chatMoreButton, chatSendButton = null;
     private ImageView chatMoreImageView, chatSendImageView = null;
@@ -125,6 +133,12 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
         screenWidth = share.getInt(StaticProperty.SCREENWIDTH,480);
         screenHeight = share.getInt(StaticProperty.SCREENHEIGHT,800);
 
+        // 实例化数据库
+        this.sqLiteOpenHelper = new MyDatabaseHelper(this);
+        this.myDatabaseUtil = new MyDatabaseUtil(
+                 this.sqLiteOpenHelper.getWritableDatabase());
+
+
         //获取权限
         StaticProperty.verifyStoragePermissions(this);
 
@@ -159,10 +173,11 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
                         .setVoiceTime((int)seconds);//保存整秒
                 chatMessage.setVoicePath(filePath);
                 messageList.add(chatMessage);
-                //istview随item的增加而向上滚动
-                ChatActivity.this.chatListView
-                        .setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
-                chatAdapter.notifyDataSetChanged();
+
+//                ChatActivity.this.chatListView
+//                        .setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+                ChatActivity.this.chatAdapter.notifyDataSetChanged();
+                ChatActivity.this.insertMessaage(chatMessage);//保存信息到数据库
             }
         });
 
@@ -203,9 +218,16 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
 
         //聊天按钮
         this.chatListView = (ListView)super.findViewById(R.id.chatListView);
-        this.messageList = new ArrayList<ChatMessage>();
+        this.chatListView
+                .setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+//        this.messageList = new ArrayList<ChatMessage>();
+        //获取聊天记录历史数据
+        this.messageList = this.myDatabaseUtil.findAllMessage();
         this.chatAdapter = new ChatAdapter(this, messageList);
         this.chatListView.setAdapter(this.chatAdapter);
+        //istview随item的增加而向上滚动
+
+
         // 点击更多显示动画
         this.animationIn = AnimationUtils.loadAnimation(
                 ChatActivity.this, R.anim.activity_movein);
@@ -275,6 +297,13 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
         }
     }
 
+    //保存发送信息
+    public void insertMessaage(ChatMessage chatMessage){
+        this.myDatabaseUtil
+                .insertMessage(chatMessage);
+    }
+
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -321,11 +350,13 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
                         chatMessage.setTextContent(message);
                         messageList.add(chatMessage);
                         //istview随item的增加而向上滚动
-                        this.chatListView
-                                .setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+//                        this.chatListView
+//                                .setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
                         chatAdapter.notifyDataSetChanged();
                         Log.i(TAG, "发送完成" + message);
                         this.chatMessageEditText.setText("");
+
+                        ChatActivity.this.insertMessaage(chatMessage);//保存信息到数据库
                     }
                 }else{//发送图片
                     String[] choices = new String[2];
@@ -472,9 +503,11 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
                     chatMessage.setContentType(StaticProperty.CHATIMAGE);// 存入信息类型
                     chatMessage.setImagePath(photoPath);
                     messageList.add(chatMessage);
-                    chatListView
-                            .setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+//                    chatListView
+//                            .setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
                     chatAdapter.notifyDataSetChanged();
+
+                    ChatActivity.this.insertMessaage(chatMessage);//保存信息到数据库
                 } catch (Exception e) {
                     Log.i(TAG, "发送异常" + e.toString());
                     e.printStackTrace();
@@ -501,6 +534,7 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        this.myDatabaseUtil.closeDatabase();
 //        MediaPlayerManager.release();
     }
 
