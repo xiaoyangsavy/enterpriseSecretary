@@ -163,6 +163,7 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
                 Log.e(TAG,seconds+":"+filePath);
 
                 ChatMessage chatMessage = new ChatMessage();
+                chatMessage.setName("我");
                 chatMessage.setMessageFlag(1);
                 Date sentDate = new Date();
                 SimpleDateFormat sdf = new SimpleDateFormat(
@@ -341,6 +342,7 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
                     } else {
                         Log.i(TAG, "msg" + message);
                         ChatMessage chatMessage = new ChatMessage();
+                        chatMessage.setName("我");
                         chatMessage.setMessageFlag(1);
                         Date sentDate = new Date();
                         SimpleDateFormat sdf = new SimpleDateFormat(
@@ -367,6 +369,9 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
                             android.R.layout.simple_expandable_list_item_1, choices);
                     AlertDialog.Builder builder = new AlertDialog.Builder(
                             ChatActivity.this);
+                    LayoutInflater layoutInflater = LayoutInflater.from(this);
+                    View longinDialogView = layoutInflater.inflate(R.layout.dialog_title, null);
+                    builder.setCustomTitle(longinDialogView);
                     builder.setTitle("请选择图片方式");
                     builder.setSingleChoiceItems(adapter, -1,
                             new DialogInterface.OnClickListener() {
@@ -461,6 +466,7 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
         boolean sendFlag = true;//发送成功
         String photoPath = null;//图片路径
         ChatMessage chatMessage = new ChatMessage();//消息发送vo类
+        chatMessage.setName("我");
         // 拍照之后回传的数据
         if (requestCode == 10 && resultCode == RESULT_OK) {
             File imagePath = new File(getFilesDir(), "Resource");

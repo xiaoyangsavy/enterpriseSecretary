@@ -17,7 +17,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginRight="20dp"
-            android:text="Tienfffffff"
+            android:text="我"
             android:textColor="#6c6c6c" />
 
         <TextView
