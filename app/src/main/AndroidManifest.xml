@@ -22,6 +22,10 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- 录制声音 -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <!-- 使用闪光灯 -->
+    <uses-permission android:name="android.permission.FLASHLIGHT"/>
+    <!-- 震动 -->
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:allowBackup="true"
@@ -30,15 +34,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.IndexActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MyBaseActivity" />
-        <activity android:name=".activity.ChatActivity" />
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -50,8 +52,20 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+        <activity android:name=".activity.MyBaseActivity" />
+        <activity android:name=".activity.ChatActivity" />
         <activity android:name=".activity.CommonBigImageActivity" />
-        <activity android:name=".activity.IndexActivity"></activity>
+        <activity android:name=".activity.MainActivity" />
+
+        <service
+            android:name=".service.NotificationService"
+            android:enabled="true"
+            android:exported="true"
+            android:process="system">
+            <intent-filter>
+                <action android:name="info.notification" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
