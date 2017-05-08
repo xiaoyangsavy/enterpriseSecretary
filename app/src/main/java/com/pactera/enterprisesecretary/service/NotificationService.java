@@ -71,7 +71,7 @@ public class NotificationService extends Service {
         public boolean isRunning = true;
 
         public void run() {
-             while (isRunning) {
+//             while (isRunning) {
             try {
                 // 间隔时间
                 Thread.sleep(5000);
@@ -88,14 +88,20 @@ public class NotificationService extends Service {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-             }
+//             }
         }
     }
 
     @Override
     public void onDestroy() {
         // System.exit(0);
-//        messageThread.isRunning = false;
+        messageThread.isRunning = false;
+
+        //重启
+        Intent serviceIntent = new Intent(this,NotificationService.class);
+        serviceIntent.setAction("info.notification");
+        startService(serviceIntent);
+
         super.onDestroy();
     }
 

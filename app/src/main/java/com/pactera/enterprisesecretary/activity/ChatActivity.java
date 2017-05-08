@@ -1,6 +1,7 @@
 package com.pactera.enterprisesecretary.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -16,8 +17,6 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -89,6 +88,8 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
     private ListView chatListView = null;// 信息显示列表
     private List<ChatMessage> messageList = null;
     public ChatAdapter chatAdapter= null;
+
+    private   AlertDialog photoDialog = null;//图片选择弹出框
 
     private InputMethodManager inputMethodManager = null;//键盘管理器
 
@@ -361,88 +362,146 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
                         ChatActivity.this.insertMessaage(chatMessage);//保存信息到数据库
                     }
                 }else{//发送图片
-                    String[] choices = new String[2];
-                    choices[0] = "拍照";
-                    choices[1] = "从相册中获取";
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                            ChatActivity.this,
-                            android.R.layout.simple_expandable_list_item_1, choices);
+//                    String[] choices = new String[2];
+//                    choices[0] = "拍照";
+//                    choices[1] = "从相册中获取";
+//                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+//                            ChatActivity.this,
+//                            android.R.layout.simple_expandable_list_item_1, choices);
                     AlertDialog.Builder builder = new AlertDialog.Builder(
                             ChatActivity.this);
                     LayoutInflater layoutInflater = LayoutInflater.from(this);
                     View longinDialogView = layoutInflater.inflate(R.layout.dialog_title, null);
                     builder.setCustomTitle(longinDialogView);
-                    builder.setTitle("请选择图片方式");
-                    builder.setSingleChoiceItems(adapter, -1,
-                            new DialogInterface.OnClickListener() {
-
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                    switch (which) {
-                                        // 点击拍照按钮
-                                        case 0:
-                                            // 先验证手机是否有sdcard
-                                            String status = Environment
-                                                    .getExternalStorageState();
-                                            if (status.equals(Environment.MEDIA_MOUNTED)) {
-                                                try {
-                                                    ChatActivity.this.photoName = "coolatin_"
-                                                            + System.currentTimeMillis()
-                                                            + ".jpg";
+//                    builder.setTitle("请选择图片方式");
+                    View dialogView = layoutInflater.inflate(R.layout.dialog_photo, null);
+                    Button photographButton = (Button)dialogView.findViewById(R.id.dialogPhotograph);
+                    photographButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // 先验证手机是否有sdcard
+                            String status = Environment
+                                    .getExternalStorageState();
+                            if (status.equals(Environment.MEDIA_MOUNTED)) {
+                                try {
+                                    ChatActivity.this.photoName = "coolatin_"
+                                            + System.currentTimeMillis()
+                                            + ".jpg";
 //
-                                                    File imagePath = new File(getFilesDir(), "Resource");
-                                                    File newFile = new File(imagePath, ChatActivity.this.photoName);
-                                                    //首次时必须创建！！！
-                                                    if (!imagePath.exists()) {
-                                                        imagePath.mkdirs();
-                                                    }
-
-                                                    ChatActivity.this.imageUri = FileProvider.getUriForFile(ChatActivity.this,"com.wow.fileprovider", newFile);//通过FileProvider创建一个content类型的Uri
-                                                    Intent intent = new Intent();
-                                                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //添加这一句表示对目标应用临时授权该Uri所代表的文件
-                                                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);//设置Action为拍照
-                                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, ChatActivity.this.imageUri);//将拍取的照片保存到指定URI
-                                                    startActivityForResult(intent,10);
-
-
-
-
-                                                } catch (ActivityNotFoundException e) {
-                                                    // TODO Auto-generated catch block
-                                                    Toast.makeText(
-                                                            ChatActivity.this,
-                                                            "没有找到储存目录", Toast.LENGTH_LONG)
-                                                            .show();
-                                                }
-                                            } else {
-                                                Toast.makeText(
-                                                        ChatActivity.this,
-                                                        "没有储存卡", Toast.LENGTH_LONG).show();
-                                            }
-                                            break;
-                                        // 点击从相册中选择照片
-                                        case 1:
-                                            Intent intent2 = new Intent(
-                                                    Intent.ACTION_PICK,
-                                                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                            startActivityForResult(intent2, 11);
-                                            // Intent intent2=new
-                                            // Intent(Intent.ACTION_GET_CONTENT);
-                                            // intent2.addCategory(Intent.CATEGORY_OPENABLE);
-                                            // intent2.setType("image/*");
-                                            // intent2.putExtra("crop", "true");
-                                            // intent2.putExtra("aspectX", 1);
-                                            // intent2.putExtra("aspectY", 1);
-                                            // intent2.putExtra("outputX", 80);
-                                            // intent2.putExtra("outputY", 80);
-                                            // intent2.putExtra("return-data", true);
-                                            // startActivityForResult(intent2, 11);
-                                            break;
+                                    File imagePath = new File(getFilesDir(), "Resource");
+                                    File newFile = new File(imagePath, ChatActivity.this.photoName);
+                                    //首次时必须创建！！！
+                                    if (!imagePath.exists()) {
+                                        imagePath.mkdirs();
                                     }
+
+                                    ChatActivity.this.imageUri = FileProvider.getUriForFile(ChatActivity.this,"com.wow.fileprovider", newFile);//通过FileProvider创建一个content类型的Uri
+                                    Intent intent = new Intent();
+                                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //添加这一句表示对目标应用临时授权该Uri所代表的文件
+                                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);//设置Action为拍照
+                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, ChatActivity.this.imageUri);//将拍取的照片保存到指定URI
+                                    startActivityForResult(intent,10);
+
+                                } catch (ActivityNotFoundException e) {
+                                    // TODO Auto-generated catch block
+                                    Toast.makeText(
+                                            ChatActivity.this,
+                                            "没有找到储存目录", Toast.LENGTH_LONG)
+                                            .show();
                                 }
-                            });
-                    builder.create().show();
+                            } else {
+                                Toast.makeText(
+                                        ChatActivity.this,
+                                        "没有储存卡", Toast.LENGTH_LONG).show();
+                            }
+                            ChatActivity.this.photoDialog.hide();
+                        }
+                    });
+                    Button albumButton = (Button)dialogView.findViewById(R.id.dialogAlbum);
+                    albumButton.setOnClickListener(new View.OnClickListener() {
+
+                                                       @Override
+                                                       public void onClick(View v) {
+                                                           Intent intent2 = new Intent(
+                                                                   Intent.ACTION_PICK,
+                                                                   android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                                           startActivityForResult(intent2, 11);
+                                                           ChatActivity.this.photoDialog.hide();
+                                                       }
+                                                   });
+                    builder.setView(dialogView);
+
+//                    builder.setSingleChoiceItems(adapter, -1,
+//                            new DialogInterface.OnClickListener() {
+//
+//                                @Override
+//                                public void onClick(DialogInterface dialog, int which) {
+//                                    dialog.dismiss();
+//                                    switch (which) {
+//                                        // 点击拍照按钮
+//                                        case 0:
+//                                            // 先验证手机是否有sdcard
+//                                            String status = Environment
+//                                                    .getExternalStorageState();
+//                                            if (status.equals(Environment.MEDIA_MOUNTED)) {
+//                                                try {
+//                                                    ChatActivity.this.photoName = "coolatin_"
+//                                                            + System.currentTimeMillis()
+//                                                            + ".jpg";
+////
+//                                                    File imagePath = new File(getFilesDir(), "Resource");
+//                                                    File newFile = new File(imagePath, ChatActivity.this.photoName);
+//                                                    //首次时必须创建！！！
+//                                                    if (!imagePath.exists()) {
+//                                                        imagePath.mkdirs();
+//                                                    }
+//
+//                                                    ChatActivity.this.imageUri = FileProvider.getUriForFile(ChatActivity.this,"com.wow.fileprovider", newFile);//通过FileProvider创建一个content类型的Uri
+//                                                    Intent intent = new Intent();
+//                                                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION); //添加这一句表示对目标应用临时授权该Uri所代表的文件
+//                                                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);//设置Action为拍照
+//                                                    intent.putExtra(MediaStore.EXTRA_OUTPUT, ChatActivity.this.imageUri);//将拍取的照片保存到指定URI
+//                                                    startActivityForResult(intent,10);
+//
+//
+//
+//
+//                                                } catch (ActivityNotFoundException e) {
+//                                                    // TODO Auto-generated catch block
+//                                                    Toast.makeText(
+//                                                            ChatActivity.this,
+//                                                            "没有找到储存目录", Toast.LENGTH_LONG)
+//                                                            .show();
+//                                                }
+//                                            } else {
+//                                                Toast.makeText(
+//                                                        ChatActivity.this,
+//                                                        "没有储存卡", Toast.LENGTH_LONG).show();
+//                                            }
+//                                            break;
+//                                        // 点击从相册中选择照片
+//                                        case 1:
+//                                            Intent intent2 = new Intent(
+//                                                    Intent.ACTION_PICK,
+//                                                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//                                            startActivityForResult(intent2, 11);
+//                                            // Intent intent2=new
+//                                            // Intent(Intent.ACTION_GET_CONTENT);
+//                                            // intent2.addCategory(Intent.CATEGORY_OPENABLE);
+//                                            // intent2.setType("image/*");
+//                                            // intent2.putExtra("crop", "true");
+//                                            // intent2.putExtra("aspectX", 1);
+//                                            // intent2.putExtra("aspectY", 1);
+//                                            // intent2.putExtra("outputX", 80);
+//                                            // intent2.putExtra("outputY", 80);
+//                                            // intent2.putExtra("return-data", true);
+//                                            // startActivityForResult(intent2, 11);
+//                                            break;
+//                                    }
+//                                }
+//                            });
+                    ChatActivity.this.photoDialog = builder.create();
+                    ChatActivity.this.photoDialog.show();
 
                 }
                 break;

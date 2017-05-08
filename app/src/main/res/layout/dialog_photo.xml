@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/dialogPhotograph"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="#ffffff"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/font_size_title"
+        android:text="拍照"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/colorLimit"/>
+    <Button
+        android:id="@+id/dialogAlbum"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_below="@id/dialogPhotograph"
+        android:background="#ffffff"
+        android:textColor="@color/colorBlack"
+        android:textSize="@dimen/font_size_title"
+        android:text="相册"/>
+
+
+</LinearLayout>
