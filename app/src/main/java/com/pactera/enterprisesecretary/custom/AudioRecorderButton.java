@@ -30,7 +30,7 @@ public class AudioRecorderButton extends Button {
     private boolean isRecording = false;
     //判断在Button上滑动距离，以判断 是否取消
     private static final int DISTANCE_Y_CANCEL = 50;
-    //对话框管理工具类
+    //语音对话框管理工具类
     private DialogManager mDialogManager;
     //录音管理工具类
     private AudioManager mAudioManager;

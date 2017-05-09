@@ -1,21 +1,25 @@
 package com.pactera.enterprisesecretary.fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.pactera.enterprisesecretary.R;
+import com.pactera.enterprisesecretary.activity.WebActivity;
 import com.pactera.enterprisesecretary.adapter.MessageAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class MessageFragment extends Fragment {
+public class MessageFragment extends Fragment implements AdapterView.OnItemClickListener{
 
     private List<Map<String,Object>> itemList = null;
     private ListView messageListView = null;
@@ -49,11 +53,18 @@ public class MessageFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_message, container,
                 false);
         messageListView = (ListView)view.findViewById(R.id.messageListView);
+        messageListView.setOnItemClickListener(this);
         messageAdapter = new MessageAdapter(getActivity(), this.itemList);
         messageListView.setAdapter(messageAdapter);
-//        messageListView.setOnItemClickListener(this);
+
 
         return view;
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Log.e("savy","跳转到网页!");
+        Intent intent = new Intent(this.getActivity(), WebActivity.class);
+        MessageFragment.this.getActivity().startActivity(intent);
+    }
 }
