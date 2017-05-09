@@ -66,7 +66,7 @@ import static android.R.id.message;
 //聊天页面
 public class ChatActivity extends MyBaseActivity implements View.OnClickListener {
 
-    public CommonUtil obtainInterfaceUtil = new CommonUtil();//通用方法
+    public CommonUtil commonUtil = new CommonUtil();//通用方法
 
     //持久化信息
     SharedPreferences share = null;
@@ -547,7 +547,7 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
 
         } else if (requestCode == 11 && resultCode == RESULT_OK) {// 从相册中获取照片之后回传的数据
             ChatActivity.this.imageUri = data.getData();
-            photoPath = obtainInterfaceUtil.getRealFilePathByUri(
+            photoPath = commonUtil.getRealFilePathByUri(
                     ChatActivity.this, ChatActivity.this.imageUri);//必须加入运行时权限，才可以根据路径获取图片！
             Log.e(TAG, "图片路径为：" +  photoPath);
             chatMessage.setImageType(1);
@@ -557,7 +557,7 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
         }
 
         //发送成功，保存图片地址
-        if (sendFlag && !"".equals(photoPath)) {//图片显示以uri为根据
+        if (sendFlag && !"".equals(photoPath)) {//图片显示以路径为根据
                 try {
                     chatMessage.setMessageFlag(1);
 //                    chatMessage.setImageUri(ChatActivity.this.imageUri);//保存图片资源编号
@@ -567,6 +567,9 @@ public class ChatActivity extends MyBaseActivity implements View.OnClickListener
                     chatMessage.setSentTime(sdf.format(sentDate));
                     chatMessage.setContentType(StaticProperty.CHATIMAGE);// 存入信息类型
                     chatMessage.setImagePath(photoPath);
+
+                    Bitmap imageBitmap = this.commonUtil.getBitmapByPath(photoPath,200,200);
+                    chatMessage.setImageBitmap(imageBitmap);
                     messageList.add(chatMessage);
 //                    chatListView
 //                            .setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);

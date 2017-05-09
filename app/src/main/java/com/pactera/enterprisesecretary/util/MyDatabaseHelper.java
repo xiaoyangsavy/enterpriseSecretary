@@ -3,6 +3,7 @@ package com.pactera.enterprisesecretary.util;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * 数据库，基类
@@ -17,6 +18,13 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 				StaticProperty.DATABASERVERSION);
 	}
 
+	/**
+	 * 这个方法
+	 * 1、在第一次打开数据库的时候才会走
+	 * 2、在清除数据之后再次运行-->打开数据库，这个方法会走
+	 * 3、没有清除数据，不会走这个方法
+	 * 4、数据库升级的时候这个方法不会走
+	 */
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		String sql = "CREATE TABLE "
@@ -29,6 +37,7 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 				+ "voicePath  		VARCHAR(50)   					,"		//语音地址
 				+ "voiceTime  		INTEGER   						,"		//语音时间
 				+ "imagePath 		VARCHAR(50)  					,"		//图片地址
+				+ "imageBitmap 		BLOB   							,"		//图片数据
 				+ "messageTime 		VARCHAR(50)   		NOT NULL 	,"		//发送或接收时间
 				+ "id				INTEGER				PRIMARY KEY "		//主键，自增
 				+ ")";
@@ -36,12 +45,17 @@ public class MyDatabaseHelper extends SQLiteOpenHelper {
 		db.execSQL(sql);
 	}
 
-	//更新数据库表
+
+	/**
+	  * 1、第一次创建数据库的时候，这个方法不会走
+	  * 2、清除数据后再次运行(相当于第一次创建)这个方法不会走
+	  * 3、数据库已经存在，而且版本升高的时候，这个方法才会调用
+	  */
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		 Log.e("savy","!!!!!!!!!!!!!!!!!!!!!!!!!升级数据库");
 		String sql = "DROP TABLE IF EXISTS " + StaticProperty.TABLECHATMESSAGE;
 		db.execSQL(sql);
-		// System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!database");
 		this.onCreate(db);
 		db.close();//关闭数据库
 	}

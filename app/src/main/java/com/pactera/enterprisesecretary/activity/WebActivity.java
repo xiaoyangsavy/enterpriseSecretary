@@ -17,7 +17,7 @@ import com.pactera.enterprisesecretary.R;
 
 public class WebActivity extends MyBaseActivity {
 
-    private ProgressBar pbProgress = null;
+    private ProgressBar webProgressBar = null;
     private WebView webView = null;
 
     @Override
@@ -27,8 +27,7 @@ public class WebActivity extends MyBaseActivity {
 
         super.hiddenGoButton();
 
-        pbProgress = (ProgressBar) findViewById(R.id.webProgressBar);
-
+        this.webProgressBar = (ProgressBar) findViewById(R.id.webProgressBar);
 
         //初始化内置浏览器
         this.webView = (WebView) findViewById(R.id.webWebView);
@@ -70,10 +69,10 @@ public class WebActivity extends MyBaseActivity {
                 //加载的进度
                 if (newProgress == 100) {
                     // 网页加载完成
-                    pbProgress.setVisibility(View.GONE);
+                    webProgressBar.setVisibility(View.GONE);
                 } else {
                     // 加载中
-                    pbProgress.setProgress(newProgress);
+                    webProgressBar.setProgress(newProgress);
                 }
             }
         });

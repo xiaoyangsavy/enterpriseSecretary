@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
 
 import com.pactera.enterprisesecretary.module.ChatMessage;
 
@@ -16,6 +17,8 @@ import java.util.List;
  * 
  */
 public class MyDatabaseUtil  {
+
+	public CommonUtil commonUtil = new CommonUtil();//通用方法
 
 	private SQLiteDatabase db = null;
 
@@ -62,6 +65,12 @@ public class MyDatabaseUtil  {
 			chatMessage.setVoicePath(result.getString(4));
 			chatMessage.setVoiceTime(result.getInt(5));
 			chatMessage.setImagePath(result.getString(6));
+
+			if(chatMessage.getImagePath()!=null&&chatMessage.getImagePath().length()>0) {
+				Bitmap imageBitmap = this.commonUtil.getBitmapByPath(chatMessage.getImagePath(), 200, 200);
+				chatMessage.setImageBitmap(imageBitmap);
+			}
+
 			chatMessage.setSentTime(result.getString(7));
 			all.add(chatMessage);
 		}

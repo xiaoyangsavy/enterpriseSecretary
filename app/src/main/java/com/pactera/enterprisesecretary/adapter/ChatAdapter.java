@@ -156,9 +156,10 @@ public class ChatAdapter extends BaseAdapter {
 						chatImage.setVisibility(View.VISIBLE);
 
 						Bitmap imageBitmap = null;
+						imageBitmap = chatMessage.getImageBitmap();
+//						imageBitmap = commonUtil.getBitmapByPath(chatMessage.getImagePath(),200,200);
 
 
-							imageBitmap = commonUtil.getBitmapByPath(chatMessage.getImagePath(),1000,1000);
 //						try {
 //						 imageBitmap = commonUtil.getBitmapByPathByUri(context,chatMessage.getImageUri(),1000,1000);//获取图片并压缩
 //						} catch (IOException e) {

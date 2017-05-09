@@ -82,8 +82,8 @@
                     android:visibility="gone" />
 
                 <View android:id="@+id/chatAudio"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
                     android:layout_gravity="center"
                     android:visibility="gone"
                     />
@@ -93,7 +93,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="2dp"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:text="我"

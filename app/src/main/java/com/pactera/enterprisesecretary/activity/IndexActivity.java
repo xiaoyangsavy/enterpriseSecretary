@@ -39,8 +39,8 @@ public class IndexActivity extends AppCompatActivity {
             sedit.commit();
 
             // 初始化数据库
-//            this.sqLiteOpenHelper = new MyDatabaseHelper(this);
-//            this.sqLiteOpenHelper.onUpgrade(this.sqLiteOpenHelper.getWritableDatabase(), 1, 2);// 格式化数据库
+            this.sqLiteOpenHelper = new MyDatabaseHelper(this);
+            this.sqLiteOpenHelper.onUpgrade(this.sqLiteOpenHelper.getWritableDatabase(), 1, 2);// 格式化数据库
         }
 
 
