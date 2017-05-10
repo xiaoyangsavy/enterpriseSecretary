@@ -10,6 +10,7 @@ import android.os.IBinder;
 
 import com.pactera.enterprisesecretary.R;
 import com.pactera.enterprisesecretary.activity.IndexActivity;
+import com.pactera.enterprisesecretary.activity.MainActivity;
 
 public class NotificationService extends Service {
 
@@ -41,7 +42,7 @@ public class NotificationService extends Service {
 
         messageNotificatioManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        messageIntent = new Intent(this, IndexActivity.class);
+        messageIntent = new Intent(this, MainActivity.class);
         messagePendingIntent = PendingIntent.getActivity(this, 0,
                 messageIntent, 0);
 

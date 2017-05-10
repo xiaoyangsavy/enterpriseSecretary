@@ -52,7 +52,7 @@ public class IndexActivity extends AppCompatActivity {
         //跳转到首页
         Intent activityIntent = new Intent(this, MainActivity.class);
         startActivity(activityIntent);
-
+        this.finish();
 
     }
 }
