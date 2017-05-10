@@ -1,22 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/chatContentLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="20dp" >
+        android:layout_marginTop="20dp"
+        android:paddingBottom="10dp">
 
         <TextView
             android:id="@+id/chatMessageName"
-            android:layout_width="wrap_content"
+            android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"
             android:text="我"
             android:textColor="#6c6c6c" />
 
@@ -29,88 +31,66 @@
             android:text="11:11"
             android:textColor="#cecece" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
+
+        <com.pactera.enterprisesecretary.custom.CircleImageview
+            android:id="@+id/chatMessageIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginTop="20dp"
-            android:paddingBottom="10dp" >
-
-            <RelativeLayout
-                android:id="@+id/relativeLayout1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="10dp" >
-
-                <com.pactera.enterprisesecretary.custom.CircleImageview
-                    android:id="@+id/chatMessageIcon"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:scaleType="fitCenter"
-                    android:src="@android:drawable/ic_menu_gallery" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/relativelayout2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dip"
-                android:layout_toRightOf="@+id/relativeLayout1" >
-            </RelativeLayout>
-
-            <LinearLayout
-                android:id="@+id/chatMessageLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/relativelayout2"
-                android:layout_marginRight="5dp"
-                android:layout_marginTop="0dp"
-                android:layout_toRightOf="@+id/relativeLayout1"
-                android:background="@drawable/chat_left_backage"
-                android:minHeight="10dip"
-                android:orientation="vertical"
-                android:paddingLeft="5dip"
-                android:paddingRight="5dip" >
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/app_icon" />
 
 
-                <ImageView
-                    android:id="@+id/chatImage"
-                    android:layout_width="80dip"
-                    android:layout_height="80dip"
-                    android:layout_margin="5dp"
-                    android:visibility="gone" />
+        <LinearLayout
+            android:id="@+id/chatMessageLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="20dp"
+            android:layout_toRightOf="@+id/chatMessageIcon"
+            android:background="@drawable/chat_left_backage"
+            android:minHeight="10dip"
+            android:orientation="vertical"
+            android:paddingLeft="5dip"
+            android:paddingRight="5dip">
 
-                <View android:id="@+id/chatAudio"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_gravity="center"
-                    android:visibility="gone"
-                    />
 
-                <TextView
-                    android:id="@+id/chatText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="2dp"
-                    android:paddingLeft="5dp"
-                    android:paddingRight="5dp"
-                    android:text="对方"
-                    android:visibility="gone"
-                    />
-            </LinearLayout>
+            <ImageView
+                android:id="@+id/chatImage"
+                android:layout_width="80dip"
+                android:layout_height="80dip"
+                android:layout_margin="5dp"
+                android:visibility="gone" />
+
+            <View
+                android:id="@+id/chatAudio"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:visibility="gone" />
 
             <TextView
-                android:id="@+id/chatAudioTime"
+                android:id="@+id/chatText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/relativelayout2"
-                android:layout_marginTop="3dp"
-                android:layout_toRightOf="@+id/chatMessageLayout"
-                android:text="0))"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="2dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
                 android:visibility="gone" />
-        </RelativeLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/chatAudioTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="23dp"
+            android:layout_toRightOf="@+id/chatMessageLayout"
+            android:text="0))"
+            android:visibility="gone" />
     </RelativeLayout>
 
 </RelativeLayout>

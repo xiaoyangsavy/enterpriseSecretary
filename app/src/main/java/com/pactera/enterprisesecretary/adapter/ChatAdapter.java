@@ -322,22 +322,19 @@ public class ChatAdapter extends BaseAdapter {
             } else if (chatMessage.getContentType() ==
                     StaticProperty.CHATVOICE) {// 声音
                 // 显示时长
-
-//					chat_message_img_left.setVisibility(View.VISIBLE);
+                chatAudio.setVisibility(View.VISIBLE);
                 chatAudioTime.setVisibility(View.VISIBLE);
-
                 chatAudioTime.setText(chatMessage.getVoiceTime() + "'))  ");
                 // // 声音点击事件
-//					chat_message_img_left.setVisibility(View.VISIBLE);
                 // 默认背景
-                this.chatAudio
+                chatAudio
                         .setBackgroundResource(R.drawable.appkefu_chatfrom_voice_playing);
-
-                // // 声音点击事件`
+                // // 声音点击事件
                 chatMessageLayout
                         .setOnClickListener(new OnClickListener() {
                             @Override
-                            public void onClick(View v) {
+                            public void onClick(View view) {
+                                final View myAudioView = view.findViewById(R.id.chatAudio);
                                 Log.e("savy",
                                         "播放开始" + String.valueOf(voicePlay));
                                 try {
@@ -346,10 +343,9 @@ public class ChatAdapter extends BaseAdapter {
                                             .equals("")) {
                                         if (voicePlay) {// 成功，进行播放
                                             // 播放背景
-                                            ChatAdapter.this.chatAudio
+                                            myAudioView
                                                     .setBackgroundResource(R.drawable.framebyframeleft);
-
-                                            final AnimationDrawable animationDrawable = (AnimationDrawable) ChatAdapter.this.chatAudio
+                                            final AnimationDrawable animationDrawable = (AnimationDrawable) myAudioView
                                                     .getBackground();
                                             voicePlay = false;
                                             mPlayer.reset();
@@ -376,8 +372,8 @@ public class ChatAdapter extends BaseAdapter {
                                                     animationDrawable
                                                             .stop();
                                                     // 播放结束，改为默认背景
-                                                    ChatAdapter.this.chatAudio
-                                                            .setBackgroundResource(R.drawable.appkefu_chatto_voice_playing);
+                                                    myAudioView
+                                                            .setBackgroundResource(R.drawable.appkefu_chatfrom_voice_playing);
                                                 }
                                             });
                                         }

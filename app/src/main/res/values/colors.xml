@@ -10,6 +10,8 @@
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlue">#6699FF</color>
+    <color name="colorGree">#0ac39e</color>
+
     <color name="colorLimit">#dddddd</color>
     <color name="colorGrayBackground">#eeeeee</color>
 

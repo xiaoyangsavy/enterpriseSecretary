@@ -48,7 +48,7 @@ public class NotificationService extends Service {
         this.notificationBuilder = new Notification.Builder(this);
         this.notificationBuilder.setContentTitle("新消息");//标题
         this.notificationBuilder.setContentText("您有新消息。");//内容
-        this.notificationBuilder.setSmallIcon(R.drawable.main_top_robot);//图标
+        this.notificationBuilder.setSmallIcon(R.drawable.app_icon);//图标
         this.notificationBuilder .setContentIntent(messagePendingIntent);//点击通知跳转
         this.notificationBuilder.setDefaults(Notification.DEFAULT_ALL);//调用系统默认铃声
         this.notificationBuilder.setAutoCancel(true);//可删除

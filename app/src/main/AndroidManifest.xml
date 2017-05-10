@@ -53,7 +53,8 @@
         </provider>
 
         <activity android:name=".activity.MyBaseActivity" />
-        <activity android:name=".activity.ChatActivity" />
+        <!-- 修改键盘遮挡的问题 -->
+        <activity android:name=".activity.ChatActivity"  android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".activity.CommonBigImageActivity" />
         <activity android:name=".activity.MainActivity" />
 
