@@ -1,12 +1,18 @@
 package com.pactera.enterprisesecretary.fragments;
 
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.pactera.enterprisesecretary.R;
 import com.pactera.enterprisesecretary.adapter.MessageAdapter;
@@ -18,7 +24,9 @@ import java.util.List;
 import java.util.Map;
 
 
-public class UserFragment extends Fragment {
+public class UserFragment extends Fragment implements AdapterView.OnItemClickListener{
+
+    private RelativeLayout userHeadLayout = null;
 
     private List<Map<String, Object>> itemList = null;
     private ListView userListView = null;
@@ -62,7 +70,6 @@ public class UserFragment extends Fragment {
         myMap.put("image", R.drawable.user_location);
         this.itemList.add(myMap);
 
-
     }
 
 
@@ -77,7 +84,29 @@ public class UserFragment extends Fragment {
         userAdapter = new UserAdapter(getActivity(), this.itemList);
         userListView.setAdapter(userAdapter);
 
+        userListView.setOnItemClickListener(this);
+
+        //登录按钮
+        userHeadLayout = (RelativeLayout) view.findViewById(R.id.userHeadLayout);
+        userHeadLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(
+                        UserFragment.this.getActivity(),
+                        "敬请期待！", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
+
         return view;
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Toast.makeText(
+                        UserFragment.this.getActivity(),
+                "敬请期待！", Toast.LENGTH_SHORT)
+                .show();
+    }
 }

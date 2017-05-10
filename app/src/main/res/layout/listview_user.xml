@@ -4,13 +4,11 @@
     android:layout_height="match_parent"
     android:background="@color/colorWhite">
 
-    <!-- 定义item高度，强制获取焦点和点击事件-->
+    <!-- 定义item高度 -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="67.3dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:descendantFocusability="blocksDescendants">
+         >
 
     <ImageView
     android:id="@+id/itemUserIconImageView"

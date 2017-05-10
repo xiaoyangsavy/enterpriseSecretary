@@ -143,6 +143,17 @@ public class MainActivity extends MyBaseActivity implements View.OnClickListener
             }
         });
 
+        //设置按钮
+        super.goButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(
+                        MainActivity.this,
+                        "敬请期待！", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
+
 
         //创建切换页面
         Bundle bundle = new Bundle();
