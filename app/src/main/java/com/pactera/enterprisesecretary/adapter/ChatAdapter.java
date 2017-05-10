@@ -28,6 +28,9 @@ import com.pactera.enterprisesecretary.util.CommonUtil;
 import com.pactera.enterprisesecretary.util.StaticProperty;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -75,7 +78,7 @@ public class ChatAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
         final ChatMessage chatMessage = chatMessageList.get(position);
-        Log.e("savy", position + "" + chatMessage.getMessageFlag() + "type:"
+        Log.e("savy", position + ":" + chatMessage.getMessageFlag() + "! type:"
                 + chatMessage.getContentType());
         int messageFlag = 1;//发送信息
         messageFlag = chatMessage.getMessageFlag();
@@ -83,7 +86,6 @@ public class ChatAdapter extends BaseAdapter {
         if (messageFlag == 1) {// 发送方信息
             convertView = ChatAdapter.this.context.getLayoutInflater().inflate(
                     R.layout.chat_msg_item_right, null);
-
 
         } else {// 接收方信息
             convertView = ChatAdapter.this.context.getLayoutInflater().inflate(
@@ -111,6 +113,39 @@ public class ChatAdapter extends BaseAdapter {
 
         chatMessageName.setText(chatMessage.getName());
         chatMessageTime.setText(chatMessage.getSentTime());
+
+
+        //判断是否显示时间
+        if (position > 0) {//非首条记录，需要判断，两条记录间隔5分钟
+            String currentTimeString = chatMessage.getSentTime();
+            String preTimeString = chatMessageList.get(position - 1).getSentTime();
+
+            SimpleDateFormat sdf = new SimpleDateFormat(
+                    "yyyy-MM-dd HH:mm:ss");
+
+            long currentTimeLong = 0l;
+            long preTimeLong = 0l;
+            try {
+                //上一条信息的时间
+                Date preDate = sdf.parse(preTimeString);
+                preTimeLong = preDate.getTime();
+                //本条信息的时间
+                Date currentDate = sdf.parse(currentTimeString);
+                currentTimeLong = currentDate.getTime();
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            if (currentTimeLong - preTimeLong > (5 * 60 * 1000)) {
+                chatMessageTime.setVisibility(View.VISIBLE);
+            } else {
+                chatMessageTime.setVisibility(View.GONE);
+            }
+
+        } else {//首条必显示
+            chatMessageTime.setVisibility(View.VISIBLE);
+        }
 
         // 判断消息类型，分别进行展示
         Log.e("savvy", "类型:" + chatMessage.getContentType());
@@ -273,8 +308,6 @@ public class ChatAdapter extends BaseAdapter {
                 System.out.println("chatUserHeadImage------------------------>" + chatMessage.getChatUserHeadImage());
             } else if (chatMessage.getContentType() ==
                     StaticProperty.CHATIMAGE) {// 图片
-                chatImage.setVisibility(View.VISIBLE);
-                chatImage.setScaleType(ImageView.ScaleType.FIT_XY);
 
                 Pattern pattern = Pattern.compile("(http://){1}");
                 // 空格结束
@@ -282,6 +315,7 @@ public class ChatAdapter extends BaseAdapter {
                 if (chatMessage.getImagePath() != null && !"".equals(chatMessage.getImagePath())) {
                     matcher = pattern.matcher(chatMessage.getImagePath());
                 }
+
                 if (matcher.find()) {// 网络图片,从历史记录中获取的图片为网络图片
                     chatImage.setVisibility(View.VISIBLE);
                     // 图片网址转换
@@ -295,7 +329,14 @@ public class ChatAdapter extends BaseAdapter {
 
                     Bitmap imageBitmap = null;
                     imageBitmap = chatMessage.getImageBitmap();
+//						imageBitmap = commonUtil.getBitmapByPath(chatMessage.getImagePath(),200,200);
 
+
+//						try {
+//						 imageBitmap = commonUtil.getBitmapByPathByUri(context,chatMessage.getImageUri(),1000,1000);//获取图片并压缩
+//						} catch (IOException e) {
+//							e.printStackTrace();
+//						}
                     Log.e("savy", "图片内容:" + imageBitmap);
                     chatImage.setImageBitmap(imageBitmap);
 
@@ -312,6 +353,8 @@ public class ChatAdapter extends BaseAdapter {
                                     if (chatMessage.getImageType() == 1) {
                                         bundle.putParcelable("imageUri", chatMessage.getImageUri());
                                     }
+//                                        bundle.putParcelable("imageBitmap",
+//                                                chatMessage.getImageBitmap());//直接传递bitmap有大小的限制
                                     intent.putExtras(bundle);
                                     intent.setClass(context,
                                             CommonBigImageActivity.class);

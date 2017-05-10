@@ -3,12 +3,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <TextView
+        android:id="@+id/chatMessageTime"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="11:11"
+        android:textColor="#cecece"
+        android:visibility="gone"/>
+
     <RelativeLayout
         android:id="@+id/chatContentLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="20dp"
+        android:layout_below="@id/chatMessageTime"
+        android:layout_marginTop="5dp"
         android:paddingBottom="10dp">
 
         <TextView
@@ -22,14 +34,6 @@
             android:text="我"
             android:textColor="#6c6c6c" />
 
-        <TextView
-            android:id="@+id/chatMessageTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:text="11:11"
-            android:textColor="#cecece" />
 
 
             <com.pactera.enterprisesecretary.custom.CircleImageview
